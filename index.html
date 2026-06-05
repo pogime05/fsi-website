@@ -29,6 +29,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet" href="styles.css" />
+    <!-- Motion One — vanilla Framer Motion engine (no React needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.js"></script>
   </head>
   <body>
 
@@ -160,120 +162,145 @@
       </section>
 
       <!-- ── Training Programs ── -->
-      <section class="section training" id="training" aria-labelledby="training-title">
-        <div class="section-heading animate">
-          <p class="eyebrow">Training Programs</p>
-          <h2 id="training-title">60+ certified programs across three pillars.</h2>
-          <p class="section-sub">FSI's training library covers every layer of a trucking operation — from the driver's seat to the dispatch desk.</p>
-        </div>
-        <!-- Tab buttons -->
-        <div class="training-tabs animate" role="tablist" aria-label="Training program categories">
-          <button class="tab-btn active" data-tab="operations" role="tab" aria-selected="true" aria-controls="panel-operations">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            Operations
-            <span class="tab-count">17</span>
-          </button>
-          <button class="tab-btn" data-tab="personnel" role="tab" aria-selected="false" aria-controls="panel-personnel">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-            Personnel
-            <span class="tab-count">22</span>
-          </button>
-          <button class="tab-btn" data-tab="safety" role="tab" aria-selected="false" aria-controls="panel-safety">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Safety
-            <span class="tab-count">28</span>
-          </button>
+      <section class="training-dark" id="training" aria-labelledby="training-title">
+
+        <div class="training-header animate">
+          <p class="eyebrow training-eyebrow">Training Programs</p>
+          <h2 id="training-title" class="training-title">60+ certified programs.<br/>Three pillars. One team.</h2>
+          <p class="training-sub">Every module FSI offers — from entry-level drivers to supervisors and trainers.</p>
         </div>
 
-        <!-- Tab panels -->
-        <div class="training-panels animate">
+        <!-- Category cards -->
+        <div class="cat-grid">
+
+          <button class="cat-card active" data-tab="operations" aria-pressed="true">
+            <div class="cat-glow"></div>
+            <div class="cat-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="cat-num" data-target="17">17</div>
+            <h3 class="cat-name">Operations</h3>
+            <p class="cat-desc">Fleet management, cost control, compliance &amp; regulatory operations.</p>
+            <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </button>
+
+          <button class="cat-card" data-tab="personnel" aria-pressed="false">
+            <div class="cat-glow"></div>
+            <div class="cat-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="cat-num" data-target="22">22</div>
+            <h3 class="cat-name">Personnel</h3>
+            <p class="cat-desc">Driver onboarding, HR compliance, hazmat certification &amp; supervisor training.</p>
+            <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </button>
+
+          <button class="cat-card" data-tab="safety" aria-pressed="false">
+            <div class="cat-glow"></div>
+            <div class="cat-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="cat-num" data-target="28">28</div>
+            <h3 class="cat-name">Safety</h3>
+            <p class="cat-desc">Defensive driving, emergency response, dangerous goods &amp; road safety.</p>
+            <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </button>
+
+        </div>
+
+        <!-- Course display panel -->
+        <div class="course-panel animate">
+          <div class="course-panel-meta">
+            <span class="course-panel-label" id="course-panel-label">Operations &mdash; 17 courses</span>
+            <span class="course-panel-hint">Click a card above to switch category</span>
+          </div>
 
           <div class="training-panel active" id="panel-operations" role="tabpanel">
             <div class="course-grid">
-              <span class="course-tag">Cost / Revenue Calculation</span>
-              <span class="course-tag">CSA Driver Training</span>
-              <span class="course-tag">CSA Supervisor Training</span>
-              <span class="course-tag">Employee Security</span>
-              <span class="course-tag">Facility Security (General)</span>
-              <span class="course-tag">Hours of Service Training — Supervisors</span>
-              <span class="course-tag">Increasing Fuel Mileage</span>
-              <span class="course-tag">Maintenance Requirements</span>
-              <span class="course-tag">Preventive Maintenance</span>
-              <span class="course-tag">Retention Training for Supervisors</span>
-              <span class="course-tag">Risk Management</span>
-              <span class="course-tag">Roadside Inspections</span>
-              <span class="course-tag">Safety and Security</span>
-              <span class="course-tag">The Professional Driver</span>
-              <span class="course-tag">Trip Planning</span>
-              <span class="course-tag">Vehicle Inspections</span>
-              <span class="course-tag">Vehicle Inspections — Canada</span>
+              <span class="course-pill">Cost / Revenue Calculation</span>
+              <span class="course-pill">CSA Driver Training</span>
+              <span class="course-pill">CSA Supervisor Training</span>
+              <span class="course-pill">Employee Security</span>
+              <span class="course-pill">Facility Security (General)</span>
+              <span class="course-pill">Hours of Service Training &mdash; Supervisors</span>
+              <span class="course-pill">Increasing Fuel Mileage</span>
+              <span class="course-pill">Maintenance Requirements</span>
+              <span class="course-pill">Preventive Maintenance</span>
+              <span class="course-pill">Retention Training for Supervisors</span>
+              <span class="course-pill">Risk Management</span>
+              <span class="course-pill">Roadside Inspections</span>
+              <span class="course-pill">Safety and Security</span>
+              <span class="course-pill">The Professional Driver</span>
+              <span class="course-pill">Trip Planning</span>
+              <span class="course-pill">Vehicle Inspections</span>
+              <span class="course-pill">Vehicle Inspections &mdash; Canada</span>
             </div>
           </div>
 
           <div class="training-panel" id="panel-personnel" role="tabpanel" hidden>
             <div class="course-grid">
-              <span class="course-tag">Alcohol &amp; Drugs — Driver</span>
-              <span class="course-tag">Alcohol &amp; Drugs — Supervisor (Alcohol)</span>
-              <span class="course-tag">Alcohol &amp; Drugs — Supervisor (Drugs)</span>
-              <span class="course-tag">Back Safety / Lifting</span>
-              <span class="course-tag">Backing</span>
-              <span class="course-tag">Driver Disqualification</span>
-              <span class="course-tag">Driver Logs</span>
-              <span class="course-tag">Employee Security</span>
-              <span class="course-tag">Entry Level Driver</span>
-              <span class="course-tag">Facility Security (General)</span>
-              <span class="course-tag">Hazmat — Training for Hazmat Employees</span>
-              <span class="course-tag">Hours of Service — Canadian</span>
-              <span class="course-tag">Hours of Service Training — Supervisors</span>
-              <span class="course-tag">Log Auditing: Property-Carrying Vehicles</span>
-              <span class="course-tag">Retention Training for Supervisors</span>
-              <span class="course-tag">Safety and Security</span>
-              <span class="course-tag">Slips / Trips / Falls</span>
-              <span class="course-tag">Supervisory Training — The Basics</span>
-              <span class="course-tag">Train the Trainer</span>
-              <span class="course-tag">Trip Planning</span>
-              <span class="course-tag">Vehicle Inspections</span>
-              <span class="course-tag">Vehicle Inspections — Canada</span>
+              <span class="course-pill">Alcohol &amp; Drugs &mdash; Driver</span>
+              <span class="course-pill">Alcohol &amp; Drugs &mdash; Supervisor (Alcohol)</span>
+              <span class="course-pill">Alcohol &amp; Drugs &mdash; Supervisor (Drugs)</span>
+              <span class="course-pill">Back Safety / Lifting</span>
+              <span class="course-pill">Backing</span>
+              <span class="course-pill">Driver Disqualification</span>
+              <span class="course-pill">Driver Logs</span>
+              <span class="course-pill">Employee Security</span>
+              <span class="course-pill">Entry Level Driver</span>
+              <span class="course-pill">Facility Security (General)</span>
+              <span class="course-pill">Hazmat &mdash; Training for Hazmat Employees</span>
+              <span class="course-pill">Hours of Service &mdash; Canadian</span>
+              <span class="course-pill">Hours of Service Training &mdash; Supervisors</span>
+              <span class="course-pill">Log Auditing: Property-Carrying Vehicles</span>
+              <span class="course-pill">Retention Training for Supervisors</span>
+              <span class="course-pill">Safety and Security</span>
+              <span class="course-pill">Slips / Trips / Falls</span>
+              <span class="course-pill">Supervisory Training &mdash; The Basics</span>
+              <span class="course-pill">Train the Trainer</span>
+              <span class="course-pill">Trip Planning</span>
+              <span class="course-pill">Vehicle Inspections</span>
+              <span class="course-pill">Vehicle Inspections &mdash; Canada</span>
             </div>
           </div>
 
           <div class="training-panel" id="panel-safety" role="tabpanel" hidden>
             <div class="course-grid">
-              <span class="course-tag">Accident Procedures</span>
-              <span class="course-tag">Backing</span>
-              <span class="course-tag">Cargo Securement</span>
-              <span class="course-tag">Cornering Techniques</span>
-              <span class="course-tag">CSA Driver Training</span>
-              <span class="course-tag">CSA Supervisor Training</span>
-              <span class="course-tag">Defensive Driving</span>
-              <span class="course-tag">Driver Logs</span>
-              <span class="course-tag">Driving Grades</span>
-              <span class="course-tag">Emergency Maneuvers</span>
-              <span class="course-tag">Employee Security</span>
-              <span class="course-tag">Entry Level Driver</span>
-              <span class="course-tag">Extreme Driving Conditions</span>
-              <span class="course-tag">Hours of Service — Canadian</span>
-              <span class="course-tag">Hours of Service Training — Supervisors</span>
-              <span class="course-tag">Hours of Service: Property-Carrying Vehicles</span>
-              <span class="course-tag">Increasing Fuel Mileage</span>
-              <span class="course-tag">Log Auditing: Property-Carrying Vehicles</span>
-              <span class="course-tag">Longer Combination Vehicles</span>
-              <span class="course-tag">Maintenance Requirements</span>
-              <span class="course-tag">Night Driving</span>
-              <span class="course-tag">Roadside Inspections</span>
-              <span class="course-tag">Sharing the Highway</span>
-              <span class="course-tag">Skid Control</span>
-              <span class="course-tag">Transport Dangerous Goods — Labels</span>
-              <span class="course-tag">Transport Dangerous Goods — Marking</span>
-              <span class="course-tag">Transport Dangerous Goods — Placarding</span>
-              <span class="course-tag">Vehicle Breakdown and Road Repair</span>
+              <span class="course-pill">Accident Procedures</span>
+              <span class="course-pill">Backing</span>
+              <span class="course-pill">Cargo Securement</span>
+              <span class="course-pill">Cornering Techniques</span>
+              <span class="course-pill">CSA Driver Training</span>
+              <span class="course-pill">CSA Supervisor Training</span>
+              <span class="course-pill">Defensive Driving</span>
+              <span class="course-pill">Driver Logs</span>
+              <span class="course-pill">Driving Grades</span>
+              <span class="course-pill">Emergency Maneuvers</span>
+              <span class="course-pill">Employee Security</span>
+              <span class="course-pill">Entry Level Driver</span>
+              <span class="course-pill">Extreme Driving Conditions</span>
+              <span class="course-pill">Hours of Service &mdash; Canadian</span>
+              <span class="course-pill">Hours of Service Training &mdash; Supervisors</span>
+              <span class="course-pill">Hours of Service: Property-Carrying Vehicles</span>
+              <span class="course-pill">Increasing Fuel Mileage</span>
+              <span class="course-pill">Log Auditing: Property-Carrying Vehicles</span>
+              <span class="course-pill">Longer Combination Vehicles</span>
+              <span class="course-pill">Maintenance Requirements</span>
+              <span class="course-pill">Night Driving</span>
+              <span class="course-pill">Roadside Inspections</span>
+              <span class="course-pill">Sharing the Highway</span>
+              <span class="course-pill">Skid Control</span>
+              <span class="course-pill">Transport Dangerous Goods &mdash; Labels</span>
+              <span class="course-pill">Transport Dangerous Goods &mdash; Marking</span>
+              <span class="course-pill">Transport Dangerous Goods &mdash; Placarding</span>
+              <span class="course-pill">Vehicle Breakdown and Road Repair</span>
             </div>
           </div>
-
         </div>
+
       </section>
 
-      <!-- ── Start a Trucking Company ── -->
+            <!-- ── Start a Trucking Company ── -->
       <section class="section startup" id="startup" aria-labelledby="startup-title">
         <div class="startup-copy animate">
           <p class="eyebrow">New Carrier Setup</p>

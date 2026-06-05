@@ -51,30 +51,86 @@ const observer = new IntersectionObserver((entries) => {
 // Observe all animate elements — including those already in view on load
 document.querySelectorAll('.animate').forEach(el => observer.observe(el));
 
-/* ── Training tabs ── */
-const tabBtns = document.querySelectorAll('.tab-btn');
-const panels = document.querySelectorAll('.training-panel');
+/* ── Training — Motion One powered ── */
+const { animate, stagger, inView } = window.Motion;
 
-tabBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.tab;
+const catCards   = document.querySelectorAll('.cat-card');
+const panelLabel = document.getElementById('course-panel-label');
+const labelMap   = {
+  operations: 'Operations — 17 courses',
+  personnel:  'Personnel — 22 courses',
+  safety:     'Safety — 28 courses',
+};
 
-    // Update buttons
-    tabBtns.forEach(b => {
-      b.classList.remove('active');
-      b.setAttribute('aria-selected', 'false');
+// Animate number counters when the category grid first scrolls into view
+inView('.cat-grid', () => {
+  document.querySelectorAll('.cat-num').forEach(el => {
+    const target = parseInt(el.dataset.target, 10);
+    animate(0, target, {
+      duration: 1.4,
+      easing: [0.22, 1, 0.36, 1],
+      onUpdate: v => { el.textContent = Math.round(v); },
     });
-    btn.classList.add('active');
-    btn.setAttribute('aria-selected', 'true');
+  });
+}, { amount: 0.3 });
 
-    // Update panels
-    panels.forEach(p => {
-      p.classList.remove('active');
-      p.hidden = true;
+// Stagger-in course pills when the panel first appears in view
+inView('.course-panel', () => {
+  const pills = document.querySelectorAll('.training-panel.active .course-pill');
+  animate(pills, { opacity: [0, 1], y: [22, 0], scale: [0.94, 1] }, {
+    delay: stagger(0.028),
+    duration: 0.45,
+    easing: [0.22, 1, 0.36, 1],
+  });
+}, { amount: 0.15 });
+
+// Stagger-in cards on scroll
+inView('.cat-grid', () => {
+  animate(catCards, { opacity: [0, 1], y: [48, 0] }, {
+    delay: stagger(0.13),
+    duration: 0.65,
+    easing: [0.22, 1, 0.36, 1],
+  });
+}, { amount: 0.2 });
+
+// Category card switching
+catCards.forEach(card => {
+  card.addEventListener('click', () => {
+    const tab = card.dataset.tab;
+    if (card.classList.contains('active')) return;
+
+    // Update card states
+    catCards.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+    card.classList.add('active');
+    card.setAttribute('aria-pressed', 'true');
+
+    // Update label
+    panelLabel.textContent = labelMap[tab];
+
+    // Get current + next panels
+    const current = document.querySelector('.training-panel.active');
+    const next    = document.getElementById(`panel-${tab}`);
+    const oldPills = current.querySelectorAll('.course-pill');
+    const newPills = next.querySelectorAll('.course-pill');
+
+    // Exit old pills — fast stagger from first to last
+    animate(oldPills, { opacity: 0, y: -14, scale: 0.92 }, {
+      delay: stagger(0.018),
+      duration: 0.22,
+      easing: 'ease-in',
+    }).finished.then(() => {
+      // Swap panels
+      current.classList.remove('active'); current.hidden = true;
+      next.classList.add('active');       next.hidden = false;
+
+      // Reset new pills then stagger them in
+      animate(newPills, { opacity: 0, y: 22, scale: 0.94 }, { duration: 0 });
+      animate(newPills, { opacity: 1, y: 0, scale: 1 }, {
+        delay: stagger(0.028),
+        duration: 0.48,
+        easing: [0.22, 1, 0.36, 1],
+      });
     });
-    const targetPanel = document.getElementById(`panel-${target}`);
-    targetPanel.classList.add('active');
-    targetPanel.hidden = false;
   });
 });
 
