@@ -1,10 +1,6 @@
 /* ── Splash screen ── */
 const splash = document.getElementById('splash');
-
-// Lock scroll while splash is visible
 document.body.style.overflow = 'hidden';
-
-// After 2.7s trigger the slide-up exit (logo 0.25s + line 0.85s + tagline 1.3s + read time)
 setTimeout(() => {
   document.body.style.overflow = '';
   splash.classList.add('is-leaving');
@@ -38,7 +34,7 @@ nav.querySelectorAll('a').forEach(link => {
   });
 });
 
-/* ── Scroll entrance animations ── */
+/* ── Scroll entrance animations (CSS-driven, no library) ── */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -47,97 +43,121 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.05 });
-
-// Observe all animate elements — including those already in view on load
 document.querySelectorAll('.animate').forEach(el => observer.observe(el));
 
 /* ── Training — Motion One powered ── */
-const { animate, stagger, inView } = window.Motion;
+// motion.umd.js exports window.Motion = { animate, stagger, inView, ... }
+const motionLoaded = typeof window.Motion !== 'undefined';
 
-const catCards   = document.querySelectorAll('.cat-card');
-const panelLabel = document.getElementById('course-panel-label');
-const labelMap   = {
-  operations: 'Operations — 17 courses',
-  personnel:  'Personnel — 22 courses',
-  safety:     'Safety — 28 courses',
-};
+if (motionLoaded) {
+  const { animate, stagger, inView } = window.Motion;
 
-// Animate number counters when the category grid first scrolls into view
-inView('.cat-grid', () => {
-  document.querySelectorAll('.cat-num').forEach(el => {
-    const target = parseInt(el.dataset.target, 10);
-    animate(0, target, {
-      duration: 1.4,
+  const catCards   = document.querySelectorAll('.cat-card');
+  const panelLabel = document.getElementById('course-panel-label');
+  const labelMap   = {
+    operations: 'Operations — 17 courses',
+    personnel:  'Personnel — 22 courses',
+    safety:     'Safety — 28 courses',
+  };
+
+  // Set initial hidden state via JS only (not CSS — so content is always visible if JS fails)
+  catCards.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(48px)';
+  });
+  document.querySelectorAll('#panel-operations .course-pill').forEach(el => {
+    el.style.opacity = '0';
+  });
+
+  // Stagger category cards in as section scrolls into view
+  inView('.cat-grid', () => {
+    animate(catCards, { opacity: [0, 1], y: [48, 0] }, {
+      delay: stagger(0.13),
+      duration: 0.65,
       easing: [0.22, 1, 0.36, 1],
-      onUpdate: v => { el.textContent = Math.round(v); },
     });
-  });
-}, { amount: 0.3 });
+  }, { amount: 0.2 });
 
-// Stagger-in course pills when the panel first appears in view
-inView('.course-panel', () => {
-  const pills = document.querySelectorAll('.training-panel.active .course-pill');
-  animate(pills, { opacity: [0, 1], y: [22, 0], scale: [0.94, 1] }, {
-    delay: stagger(0.028),
-    duration: 0.45,
-    easing: [0.22, 1, 0.36, 1],
-  });
-}, { amount: 0.15 });
-
-// Stagger-in cards on scroll
-inView('.cat-grid', () => {
-  animate(catCards, { opacity: [0, 1], y: [48, 0] }, {
-    delay: stagger(0.13),
-    duration: 0.65,
-    easing: [0.22, 1, 0.36, 1],
-  });
-}, { amount: 0.2 });
-
-// Category card switching
-catCards.forEach(card => {
-  card.addEventListener('click', () => {
-    const tab = card.dataset.tab;
-    if (card.classList.contains('active')) return;
-
-    // Update card states
-    catCards.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
-    card.classList.add('active');
-    card.setAttribute('aria-pressed', 'true');
-
-    // Update label
-    panelLabel.textContent = labelMap[tab];
-
-    // Get current + next panels
-    const current = document.querySelector('.training-panel.active');
-    const next    = document.getElementById(`panel-${tab}`);
-    const oldPills = current.querySelectorAll('.course-pill');
-    const newPills = next.querySelectorAll('.course-pill');
-
-    // Exit old pills — fast stagger, then swap + animate new ones in onComplete
-    const exitDuration   = 0.22;
-    const maxExitDelay   = (oldPills.length - 1) * 0.018;
-    const totalExitMs    = (exitDuration + maxExitDelay) * 1000 + 20; // +20ms buffer
-
-    animate(oldPills, { opacity: 0, y: -14, scale: 0.92 }, {
-      delay:  stagger(0.018),
-      duration: exitDuration,
-      easing: 'ease-in',
-    });
-
-    setTimeout(() => {
-      // Swap panels
-      current.classList.remove('active'); current.hidden = true;
-      next.classList.add('active');       next.hidden = false;
-
-      // Stagger new pills in
-      animate(newPills, { opacity: [0, 1], y: [22, 0], scale: [0.94, 1] }, {
-        delay: stagger(0.028),
-        duration: 0.48,
+  // Animate number counters up (0 → 17 / 22 / 28)
+  inView('.cat-grid', () => {
+    document.querySelectorAll('.cat-num').forEach(el => {
+      const target = parseInt(el.dataset.target, 10);
+      animate(0, target, {
+        duration: 1.4,
         easing: [0.22, 1, 0.36, 1],
+        onUpdate: v => { el.textContent = Math.round(v); },
       });
-    }, totalExitMs);
+    });
+  }, { amount: 0.3 });
+
+  // Stagger-in active course pills when course panel scrolls into view
+  inView('.course-panel', () => {
+    const pills = document.querySelectorAll('.training-panel.active .course-pill');
+    animate(pills, { opacity: [0, 1], y: [22, 0], scale: [0.94, 1] }, {
+      delay: stagger(0.028),
+      duration: 0.45,
+      easing: [0.22, 1, 0.36, 1],
+    });
+  }, { amount: 0.15 });
+
+  // Category card click — animated panel switch
+  catCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const tab = card.dataset.tab;
+      if (card.classList.contains('active')) return;
+
+      // Update active card state
+      catCards.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+      card.classList.add('active');
+      card.setAttribute('aria-pressed', 'true');
+      panelLabel.textContent = labelMap[tab];
+
+      // Get current + next panels
+      const current  = document.querySelector('.training-panel.active');
+      const next     = document.getElementById(`panel-${tab}`);
+      const oldPills = current.querySelectorAll('.course-pill');
+      const newPills = next.querySelectorAll('.course-pill');
+
+      // Exit old pills with fast stagger
+      const exitDuration = 0.22;
+      const totalExitMs  = (exitDuration + (oldPills.length - 1) * 0.018) * 1000 + 20;
+
+      animate(oldPills, { opacity: 0, y: -14, scale: 0.92 }, {
+        delay: stagger(0.018),
+        duration: exitDuration,
+        easing: 'ease-in',
+      });
+
+      // After exit completes: swap panels + stagger new pills in
+      setTimeout(() => {
+        current.classList.remove('active'); current.hidden = true;
+        next.classList.add('active');       next.hidden = false;
+
+        animate(newPills, { opacity: [0, 1], y: [22, 0], scale: [0.94, 1] }, {
+          delay: stagger(0.028),
+          duration: 0.48,
+          easing: [0.22, 1, 0.36, 1],
+        });
+      }, totalExitMs);
+    });
   });
-});
+
+} else {
+  // Motion One didn't load — wire up plain tab switching with no animation
+  console.warn('Motion One not loaded — using plain tab switching.');
+  document.querySelectorAll('.cat-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const tab = card.dataset.tab;
+      document.querySelectorAll('.cat-card').forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+      card.classList.add('active'); card.setAttribute('aria-pressed', 'true');
+      document.getElementById('course-panel-label').textContent =
+        { operations: 'Operations — 17 courses', personnel: 'Personnel — 22 courses', safety: 'Safety — 28 courses' }[tab];
+      document.querySelectorAll('.training-panel').forEach(p => { p.classList.remove('active'); p.hidden = true; });
+      const next = document.getElementById(`panel-${tab}`);
+      next.classList.add('active'); next.hidden = false;
+    });
+  });
+}
 
 /* ── Contact form — Formspree ── */
 // Replace YOUR_FORM_ID in the form action with your Formspree form ID.

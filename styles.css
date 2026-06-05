@@ -530,9 +530,6 @@ h3 {
   overflow: hidden;
   transition: border-color 260ms ease, background 260ms ease, transform 220ms ease, box-shadow 260ms ease;
   color: #fff;
-  /* Motion One animates opacity + y in on scroll — start hidden */
-  opacity: 0;
-  transform: translateY(48px);
   will-change: opacity, transform;
 }
 
@@ -674,8 +671,6 @@ h3 {
   cursor: default;
   transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
   will-change: transform, opacity;
-  /* Start hidden — Motion One staggers them in */
-  opacity: 0;
 }
 
 .course-pill:hover {
