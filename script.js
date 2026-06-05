@@ -113,24 +113,29 @@ catCards.forEach(card => {
     const oldPills = current.querySelectorAll('.course-pill');
     const newPills = next.querySelectorAll('.course-pill');
 
-    // Exit old pills — fast stagger from first to last
+    // Exit old pills — fast stagger, then swap + animate new ones in onComplete
+    const exitDuration   = 0.22;
+    const maxExitDelay   = (oldPills.length - 1) * 0.018;
+    const totalExitMs    = (exitDuration + maxExitDelay) * 1000 + 20; // +20ms buffer
+
     animate(oldPills, { opacity: 0, y: -14, scale: 0.92 }, {
-      delay: stagger(0.018),
-      duration: 0.22,
+      delay:  stagger(0.018),
+      duration: exitDuration,
       easing: 'ease-in',
-    }).finished.then(() => {
+    });
+
+    setTimeout(() => {
       // Swap panels
       current.classList.remove('active'); current.hidden = true;
       next.classList.add('active');       next.hidden = false;
 
-      // Reset new pills then stagger them in
-      animate(newPills, { opacity: 0, y: 22, scale: 0.94 }, { duration: 0 });
-      animate(newPills, { opacity: 1, y: 0, scale: 1 }, {
+      // Stagger new pills in
+      animate(newPills, { opacity: [0, 1], y: [22, 0], scale: [0.94, 1] }, {
         delay: stagger(0.028),
         duration: 0.48,
         easing: [0.22, 1, 0.36, 1],
       });
-    });
+    }, totalExitMs);
   });
 });
 
