@@ -4,417 +4,339 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>FSI Freight Solutions | Freight, Training & Carrier Compliance — Brampton, ON</title>
-    <meta name="description" content="FSI Freight Solutions provides freight coordination, 60+ driver training programs, and step-by-step carrier setup services. Based in Brampton, ON. Call 905.458.0800." />
-
-    <!-- Open Graph / Social -->
+    <meta name="description" content="FSI Freight Solutions provides freight coordination, 60+ driver training programs, and step-by-step carrier setup. Brampton, ON. 905.458.0800." />
     <meta property="og:title" content="FSI Freight Solutions" />
-    <meta property="og:description" content="Freight coordination, driver training, and carrier compliance — Brampton, ON. Call 905.458.0800." />
+    <meta property="og:description" content="Freight coordination, driver training, and carrier compliance — Brampton, ON." />
     <meta property="og:image" content="assets/hero-freight.png" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://fsifreightsolutions.ca" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="FSI Freight Solutions" />
-    <meta name="twitter:description" content="Freight coordination, driver training, and carrier compliance — Brampton, ON." />
-    <meta name="twitter:image" content="assets/hero-freight.png" />
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-
-    <!-- Preload LCP hero image -->
     <link rel="preload" as="image" href="assets/hero-freight.png" />
-
-    <!-- Inter font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
-    <link rel="stylesheet" href="styles.css" />
-    <!-- Motion One — vanilla Framer Motion engine (no React needed) -->
     <script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.umd.js"></script>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
 
-    <!-- ── Splash ── -->
-    <div id="splash" aria-hidden="true" role="presentation">
-      <div class="splash-inner">
-        <img class="splash-logo" src="assets/fsi-logo.png" alt="" />
-        <div class="splash-divider"></div>
+    <!-- ── SPLASH ── -->
+    <div id="splash" aria-hidden="true">
+      <div class="splash-particles" id="splash-particles"></div>
+      <div class="splash-content">
+        <div class="splash-letters" aria-label="FSI">
+          <span class="sl-f">F</span>
+          <span class="sl-s">S</span>
+          <span class="sl-i">i</span>
+        </div>
+        <p class="splash-name">Freight Solutions</p>
+        <div class="splash-line"></div>
         <p class="splash-tagline">"When You're out of Quality, You're out of Business"</p>
       </div>
     </div>
 
+    <!-- ── HEADER ── -->
     <header class="site-header" data-elevate>
-      <a class="brand" href="#top" aria-label="FSI Freight Solutions home">
+      <a class="brand" href="#home" data-view="home" aria-label="FSI home">
         <img src="assets/fsi-logo.png" alt="FSI Freight Solutions" />
       </a>
       <button class="nav-toggle" aria-label="Open navigation" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="site-nav" aria-label="Main navigation">
-        <a href="#services">Services</a>
-        <a href="#training">Training</a>
-        <a href="#startup">Start a Company</a>
-        <a href="#contact">Contact</a>
-        <a class="nav-cta" href="#contact">Get a quote</a>
+        <a href="#home"     data-view="home">Home</a>
+        <a href="#services" data-view="services">Services</a>
+        <a href="#training" data-view="training">Training</a>
+        <a href="#startup"  data-view="startup">Start a Company</a>
+        <a href="#contact"  data-view="contact">Contact</a>
+        <a class="nav-cta"  href="#contact" data-view="contact">Get a quote</a>
       </nav>
-      <a class="header-action" href="#contact">Request a quote</a>
+      <a class="header-action" href="#contact" data-view="contact">Request a quote</a>
     </header>
 
-    <main id="top">
+    <main class="views-wrap">
 
-      <!-- ── Hero ── -->
-      <section class="hero" aria-labelledby="hero-title">
-        <img class="hero-image" src="assets/hero-freight.png" alt="" />
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <p class="eyebrow">FSI Freight Solutions</p>
-          <h1 id="hero-title">Freight made simple, reliable, and ready to move.</h1>
-          <p class="hero-copy">
-            Freight coordination, driver training, and full carrier compliance support — for businesses that demand clear communication and dependable results.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#contact">Get a quote</a>
-            <a class="button secondary" href="#services">View services</a>
+      <!-- ══════════════════════════════════════
+           HOME VIEW
+      ══════════════════════════════════════ -->
+      <div id="view-home" class="view active">
+
+        <section class="hero" aria-labelledby="hero-title">
+          <img class="hero-image" src="assets/hero-freight.png" alt="" />
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <p class="eyebrow">FSI Freight Solutions — Brampton, ON</p>
+            <h1 id="hero-title" class="hero-h1">Freight made simple,<br>reliable, and ready to move.</h1>
+            <p class="hero-copy hero-copy-reveal">
+              Full-service transportation support — freight coordination, driver training, and carrier compliance. Everything your trucking operation needs, under one roof.
+            </p>
+            <div class="hero-actions hero-actions-reveal">
+              <a class="button primary" href="#contact" data-view="contact">Get a quote</a>
+              <a class="button secondary" href="#services" data-view="services">Explore services</a>
+            </div>
+            <p class="hero-tagline hero-tagline-reveal">"When You're out of Quality, You're out of Business"</p>
           </div>
-          <p class="hero-tagline">"When You're out of Quality, You're out of Business"</p>
-        </div>
-      </section>
+        </section>
 
-      <!-- ── Trust bar ── -->
-      <div class="trust-bar animate">
-        <div class="trust-item">
-          <span>24/7</span>
-          <p>Freight coordination &amp; support</p>
-        </div>
-        <div class="trust-item">
-          <span>60+</span>
-          <p>Certified training programs</p>
-        </div>
-        <div class="trust-item">
-          <span>Canada &amp; US</span>
-          <p>Operating authority coverage</p>
-        </div>
-        <div class="trust-item">
-          <span>Brampton, ON</span>
-          <p>Serving carriers nationwide</p>
-        </div>
-      </div>
-
-      <!-- ── Services ── -->
-      <section class="section services" id="services" aria-labelledby="services-title">
-        <div class="section-heading animate">
-          <p class="eyebrow">What We Do</p>
-          <h2 id="services-title">Everything your operation needs — freight, training, and compliance.</h2>
-        </div>
-        <div class="service-grid">
-
-          <article class="service-card animate">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="1" y="3" width="15" height="13" rx="1"/>
-                <path d="M16 8h4l3 5v3h-7V8z"/>
-                <circle cx="5.5" cy="18.5" r="2.5"/>
-                <circle cx="18.5" cy="18.5" r="2.5"/>
-              </svg>
+        <section class="section about" aria-label="About FSI">
+          <div class="about-inner">
+            <div class="about-stat">
+              <div class="about-stat-main">
+                <span class="about-stat-num" data-count="24">24</span>
+                <span class="about-stat-suffix">/7</span>
+              </div>
+              <p>Freight coordination &amp; support</p>
             </div>
-            <span class="card-index">01</span>
-            <h3>Freight Coordination</h3>
-            <p>Full truckload, LTL, and expedited shipping coordination for businesses moving cargo across Canada and the US — with 24/7 responsive support.</p>
-          </article>
-
-          <article class="service-card animate">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <polyline points="9 12 11 14 15 10"/>
-              </svg>
-            </div>
-            <span class="card-index">02</span>
-            <h3>Regulatory Compliance</h3>
-            <p>MTO/DOT audits, Canadian and US operating authorities, C-TPAT, PIP, CSA, IRP &amp; IFTA registration, drug &amp; alcohol testing, and US/Canadian bonds.</p>
-          </article>
-
-          <article class="service-card animate">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-              </svg>
-            </div>
-            <span class="card-index">03</span>
-            <h3>Driver Training Programs</h3>
-            <p>60+ certified training modules across operations, personnel, and safety — designed for entry-level drivers through supervisors and trainers.</p>
-          </article>
-
-          <article class="service-card animate">
-            <div class="card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-            </div>
-            <span class="card-index">04</span>
-            <h3>Start a Trucking Company</h3>
-            <p>Your step-by-step guide to launching a carrier — from authority applications and registrations to compliance programs and driver coaching.</p>
-          </article>
-
-        </div>
-      </section>
-
-      <!-- ── Training Programs ── -->
-      <section class="training-dark" id="training" aria-labelledby="training-title">
-
-        <div class="training-header animate">
-          <p class="eyebrow training-eyebrow">Training Programs</p>
-          <h2 id="training-title" class="training-title">60+ certified programs.<br/>Three pillars. One team.</h2>
-          <p class="training-sub">Every module FSI offers — from entry-level drivers to supervisors and trainers.</p>
-        </div>
-
-        <!-- Category cards -->
-        <div class="cat-grid">
-
-          <button class="cat-card active" data-tab="operations" aria-pressed="true">
-            <div class="cat-glow"></div>
-            <div class="cat-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-            </div>
-            <div class="cat-num" data-target="17">17</div>
-            <h3 class="cat-name">Operations</h3>
-            <p class="cat-desc">Fleet management, cost control, compliance &amp; regulatory operations.</p>
-            <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-          </button>
-
-          <button class="cat-card" data-tab="personnel" aria-pressed="false">
-            <div class="cat-glow"></div>
-            <div class="cat-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-            </div>
-            <div class="cat-num" data-target="22">22</div>
-            <h3 class="cat-name">Personnel</h3>
-            <p class="cat-desc">Driver onboarding, HR compliance, hazmat certification &amp; supervisor training.</p>
-            <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-          </button>
-
-          <button class="cat-card" data-tab="safety" aria-pressed="false">
-            <div class="cat-glow"></div>
-            <div class="cat-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div class="cat-num" data-target="28">28</div>
-            <h3 class="cat-name">Safety</h3>
-            <p class="cat-desc">Defensive driving, emergency response, dangerous goods &amp; road safety.</p>
-            <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
-          </button>
-
-        </div>
-
-        <!-- Course display panel -->
-        <div class="course-panel animate">
-          <div class="course-panel-meta">
-            <span class="course-panel-label" id="course-panel-label">Operations &mdash; 17 courses</span>
-            <span class="course-panel-hint">Click a card above to switch category</span>
-          </div>
-
-          <div class="training-panel active" id="panel-operations" role="tabpanel">
-            <div class="course-grid">
-              <span class="course-pill">Cost / Revenue Calculation</span>
-              <span class="course-pill">CSA Driver Training</span>
-              <span class="course-pill">CSA Supervisor Training</span>
-              <span class="course-pill">Employee Security</span>
-              <span class="course-pill">Facility Security (General)</span>
-              <span class="course-pill">Hours of Service Training &mdash; Supervisors</span>
-              <span class="course-pill">Increasing Fuel Mileage</span>
-              <span class="course-pill">Maintenance Requirements</span>
-              <span class="course-pill">Preventive Maintenance</span>
-              <span class="course-pill">Retention Training for Supervisors</span>
-              <span class="course-pill">Risk Management</span>
-              <span class="course-pill">Roadside Inspections</span>
-              <span class="course-pill">Safety and Security</span>
-              <span class="course-pill">The Professional Driver</span>
-              <span class="course-pill">Trip Planning</span>
-              <span class="course-pill">Vehicle Inspections</span>
-              <span class="course-pill">Vehicle Inspections &mdash; Canada</span>
+            <div class="about-copy">
+              <p class="eyebrow">Who We Are</p>
+              <h2 class="split-words">The only partner you need to run, grow, or start a trucking operation.</h2>
+              <p>FSI Freight Solutions is a Brampton-based transportation consultancy. We help carriers coordinate shipments, certify drivers through 60+ compliance programs, and navigate every step of launching a new carrier — from authorities and bonds to drug testing and driver coaching.</p>
             </div>
           </div>
+        </section>
 
-          <div class="training-panel" id="panel-personnel" role="tabpanel" hidden>
-            <div class="course-grid">
-              <span class="course-pill">Alcohol &amp; Drugs &mdash; Driver</span>
-              <span class="course-pill">Alcohol &amp; Drugs &mdash; Supervisor (Alcohol)</span>
-              <span class="course-pill">Alcohol &amp; Drugs &mdash; Supervisor (Drugs)</span>
-              <span class="course-pill">Back Safety / Lifting</span>
-              <span class="course-pill">Backing</span>
-              <span class="course-pill">Driver Disqualification</span>
-              <span class="course-pill">Driver Logs</span>
-              <span class="course-pill">Employee Security</span>
-              <span class="course-pill">Entry Level Driver</span>
-              <span class="course-pill">Facility Security (General)</span>
-              <span class="course-pill">Hazmat &mdash; Training for Hazmat Employees</span>
-              <span class="course-pill">Hours of Service &mdash; Canadian</span>
-              <span class="course-pill">Hours of Service Training &mdash; Supervisors</span>
-              <span class="course-pill">Log Auditing: Property-Carrying Vehicles</span>
-              <span class="course-pill">Retention Training for Supervisors</span>
-              <span class="course-pill">Safety and Security</span>
-              <span class="course-pill">Slips / Trips / Falls</span>
-              <span class="course-pill">Supervisory Training &mdash; The Basics</span>
-              <span class="course-pill">Train the Trainer</span>
-              <span class="course-pill">Trip Planning</span>
-              <span class="course-pill">Vehicle Inspections</span>
-              <span class="course-pill">Vehicle Inspections &mdash; Canada</span>
+        <section class="section teasers" aria-labelledby="teasers-title">
+          <div class="section-heading">
+            <p class="eyebrow">What We Do</p>
+            <h2 id="teasers-title" class="split-words">Four ways FSI moves your business forward.</h2>
+          </div>
+          <div class="teaser-grid">
+            <button class="teaser-card" data-view="services">
+              <div class="tc-glow"></div>
+              <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+              <h3>Freight Coordination</h3>
+              <p>TL, LTL &amp; expedited shipping across Canada and the US with 24/7 support.</p>
+              <span class="tc-cta">Explore <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </button>
+            <button class="teaser-card" data-view="training">
+              <div class="tc-glow"></div>
+              <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+              <h3>Driver Training</h3>
+              <p>60+ certified modules across operations, personnel, and safety compliance.</p>
+              <span class="tc-cta">Explore <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </button>
+            <button class="teaser-card" data-view="startup">
+              <div class="tc-glow"></div>
+              <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <h3>Start a Company</h3>
+              <p>Step-by-step from zero to operating — authorities, bonds &amp; everything between.</p>
+              <span class="tc-cta">Explore <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </button>
+            <button class="teaser-card teaser-featured" data-view="contact">
+              <div class="tc-glow"></div>
+              <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.84a16 16 0 006.29 6.29l1.17-.74a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+              <h3>Get a Quote</h3>
+              <p>Tell FSI what needs to move — follow up with pricing and availability.</p>
+              <span class="tc-cta">Contact us <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </button>
+          </div>
+        </section>
+
+        <div class="trust-bar">
+          <div class="trust-item"><span class="trust-num" data-count="24">24</span><sup>/7</sup><p>Coordination &amp; support</p></div>
+          <div class="trust-item"><span class="trust-num" data-count="60">60</span><sup>+</sup><p>Training programs</p></div>
+          <div class="trust-item"><span class="trust-str">Canada &amp; US</span><p>Authority coverage</p></div>
+          <div class="trust-item"><span class="trust-str">Brampton, ON</span><p>Serving carriers nationwide</p></div>
+        </div>
+
+      </div><!-- /view-home -->
+
+      <!-- ══════════════════════════════════════
+           SERVICES VIEW
+      ══════════════════════════════════════ -->
+      <div id="view-services" class="view">
+        <div class="view-topbar">
+          <button class="back-btn" data-view="home"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4l-4 4 4 4"/></svg> Back</button>
+          <span class="view-crumb">Services</span>
+        </div>
+
+        <section class="section view-intro">
+          <p class="eyebrow">What We Offer</p>
+          <h2 class="split-words">Full-service freight &amp; compliance — under one roof.</h2>
+          <p class="section-sub">From daily shipping to regulatory compliance and driver training, FSI handles every layer of your trucking operation.</p>
+        </section>
+
+        <section class="section svc-grid-section">
+          <div class="svc-grid">
+            <article class="svc-card">
+              <div class="svc-num">01</div>
+              <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+              <h3>Freight Coordination</h3>
+              <p>Coordinated full truckload, LTL, and expedited shipping for businesses moving cargo across Canada and the US — with 24/7 responsive support and clear communication.</p>
+              <ul class="svc-list"><li>Full Truckload (TL)</li><li>Less-Than-Truckload (LTL)</li><li>Expedited &amp; Priority Shipments</li><li>24/7 Coordination</li><li>Canada &amp; US Coverage</li></ul>
+            </article>
+            <article class="svc-card">
+              <div class="svc-num">02</div>
+              <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+              <h3>Regulatory Compliance</h3>
+              <p>MTO/DOT audits, authority applications, drug &amp; alcohol testing programs, bond management, and cross-border registrations — full spectrum handled by FSI.</p>
+              <ul class="svc-list"><li>MTO / DOT Audits</li><li>Canadian &amp; US Operating Authorities</li><li>Drug &amp; Alcohol Testing</li><li>C-TPAT, PIP &amp; CSA Compliance</li><li>IRP &amp; IFTA Registration</li><li>US / Canadian Bonds</li></ul>
+            </article>
+            <article class="svc-card">
+              <div class="svc-num">03</div>
+              <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+              <h3>Driver Training Programs</h3>
+              <p>60+ certified modules covering every aspect of trucking — entry-level drivers through supervisors and trainers across three compliance pillars.</p>
+              <ul class="svc-list"><li>Operations Training (17 modules)</li><li>Personnel Training (22 modules)</li><li>Safety Training (28 modules)</li><li>Hazmat Certification</li><li>Train the Trainer</li></ul>
+              <button class="svc-link-btn" data-view="training">View all 60+ programs →</button>
+            </article>
+            <article class="svc-card">
+              <div class="svc-num">04</div>
+              <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <h3>Start a Trucking Company</h3>
+              <p>FSI's step-by-step guide takes new carriers from zero to operating — handling every regulatory and compliance requirement so you can focus on the road ahead.</p>
+              <ul class="svc-list"><li>Business Setup Guidance</li><li>Authority Applications</li><li>Compliance Program Setup</li><li>Driver Coach Training</li><li>Ongoing Support</li></ul>
+              <button class="svc-link-btn" data-view="startup">Learn more →</button>
+            </article>
+          </div>
+        </section>
+
+        <section class="section process-section">
+          <div class="process-inner">
+            <div><p class="eyebrow">How We Work</p><h2>Clear communication from pickup to delivery.</h2></div>
+            <div class="timeline">
+              <div class="timeline-item"><span>Plan</span><p>Confirm shipment details, timing, freight requirements, and the best service path.</p></div>
+              <div class="timeline-item"><span>Coordinate</span><p>Arrange carrier support, pickup details, route needs, and delivery expectations.</p></div>
+              <div class="timeline-item"><span>Update</span><p>Keep the right people informed so the shipment stays visible and decisions stay easy.</p></div>
             </div>
           </div>
+        </section>
 
-          <div class="training-panel" id="panel-safety" role="tabpanel" hidden>
-            <div class="course-grid">
-              <span class="course-pill">Accident Procedures</span>
-              <span class="course-pill">Backing</span>
-              <span class="course-pill">Cargo Securement</span>
-              <span class="course-pill">Cornering Techniques</span>
-              <span class="course-pill">CSA Driver Training</span>
-              <span class="course-pill">CSA Supervisor Training</span>
-              <span class="course-pill">Defensive Driving</span>
-              <span class="course-pill">Driver Logs</span>
-              <span class="course-pill">Driving Grades</span>
-              <span class="course-pill">Emergency Maneuvers</span>
-              <span class="course-pill">Employee Security</span>
-              <span class="course-pill">Entry Level Driver</span>
-              <span class="course-pill">Extreme Driving Conditions</span>
-              <span class="course-pill">Hours of Service &mdash; Canadian</span>
-              <span class="course-pill">Hours of Service Training &mdash; Supervisors</span>
-              <span class="course-pill">Hours of Service: Property-Carrying Vehicles</span>
-              <span class="course-pill">Increasing Fuel Mileage</span>
-              <span class="course-pill">Log Auditing: Property-Carrying Vehicles</span>
-              <span class="course-pill">Longer Combination Vehicles</span>
-              <span class="course-pill">Maintenance Requirements</span>
-              <span class="course-pill">Night Driving</span>
-              <span class="course-pill">Roadside Inspections</span>
-              <span class="course-pill">Sharing the Highway</span>
-              <span class="course-pill">Skid Control</span>
-              <span class="course-pill">Transport Dangerous Goods &mdash; Labels</span>
-              <span class="course-pill">Transport Dangerous Goods &mdash; Marking</span>
-              <span class="course-pill">Transport Dangerous Goods &mdash; Placarding</span>
-              <span class="course-pill">Vehicle Breakdown and Road Repair</span>
+        <div class="cta-strip">
+          <p>Ready to move freight or get your operation compliant?</p>
+          <button class="button primary" data-view="contact">Request a quote</button>
+        </div>
+      </div><!-- /view-services -->
+
+      <!-- ══════════════════════════════════════
+           TRAINING VIEW
+      ══════════════════════════════════════ -->
+      <div id="view-training" class="view">
+        <div class="view-topbar">
+          <button class="back-btn" data-view="home"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4l-4 4 4 4"/></svg> Back</button>
+          <span class="view-crumb">Training Programs</span>
+        </div>
+
+        <section class="training-dark" aria-labelledby="training-title">
+          <div class="training-header">
+            <p class="eyebrow training-eyebrow">Certified Training</p>
+            <h2 id="training-title" class="training-title split-words">60+ certified programs.<br>Three pillars. One team.</h2>
+            <p class="training-sub">Every module FSI offers — from entry-level drivers to supervisors and trainers.</p>
+          </div>
+          <div class="cat-grid">
+            <button class="cat-card active" data-tab="operations" data-count="17" aria-pressed="true">
+              <div class="cat-glow"></div>
+              <div class="cat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <div class="cat-num" data-target="17">17</div>
+              <h3 class="cat-name">Operations</h3>
+              <p class="cat-desc">Fleet management, cost control, compliance &amp; regulatory operations.</p>
+              <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </button>
+            <button class="cat-card" data-tab="personnel" data-count="22" aria-pressed="false">
+              <div class="cat-glow"></div>
+              <div class="cat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+              <div class="cat-num" data-target="22">22</div>
+              <h3 class="cat-name">Personnel</h3>
+              <p class="cat-desc">Driver onboarding, HR compliance, hazmat &amp; supervisor training.</p>
+              <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </button>
+            <button class="cat-card" data-tab="safety" data-count="28" aria-pressed="false">
+              <div class="cat-glow"></div>
+              <div class="cat-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="cat-num" data-target="28">28</div>
+              <h3 class="cat-name">Safety</h3>
+              <p class="cat-desc">Defensive driving, emergency response, dangerous goods &amp; road safety.</p>
+              <span class="cat-cta">Browse courses <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </button>
+          </div>
+          <div class="course-panel">
+            <div class="course-panel-meta">
+              <span class="course-panel-label" id="course-panel-label">Operations — 17 courses</span>
+              <span class="course-panel-hint">Click a category to switch</span>
+            </div>
+            <div class="training-panel active" id="panel-operations" role="tabpanel">
+              <div class="course-grid">
+                <span class="course-pill">Cost / Revenue Calculation</span><span class="course-pill">CSA Driver Training</span><span class="course-pill">CSA Supervisor Training</span><span class="course-pill">Employee Security</span><span class="course-pill">Facility Security (General)</span><span class="course-pill">Hours of Service Training — Supervisors</span><span class="course-pill">Increasing Fuel Mileage</span><span class="course-pill">Maintenance Requirements</span><span class="course-pill">Preventive Maintenance</span><span class="course-pill">Retention Training for Supervisors</span><span class="course-pill">Risk Management</span><span class="course-pill">Roadside Inspections</span><span class="course-pill">Safety and Security</span><span class="course-pill">The Professional Driver</span><span class="course-pill">Trip Planning</span><span class="course-pill">Vehicle Inspections</span><span class="course-pill">Vehicle Inspections — Canada</span>
+              </div>
+            </div>
+            <div class="training-panel" id="panel-personnel" role="tabpanel" hidden>
+              <div class="course-grid">
+                <span class="course-pill">Alcohol &amp; Drugs — Driver</span><span class="course-pill">Alcohol &amp; Drugs — Supervisor (Alcohol)</span><span class="course-pill">Alcohol &amp; Drugs — Supervisor (Drugs)</span><span class="course-pill">Back Safety / Lifting</span><span class="course-pill">Backing</span><span class="course-pill">Driver Disqualification</span><span class="course-pill">Driver Logs</span><span class="course-pill">Employee Security</span><span class="course-pill">Entry Level Driver</span><span class="course-pill">Facility Security (General)</span><span class="course-pill">Hazmat — Training for Hazmat Employees</span><span class="course-pill">Hours of Service — Canadian</span><span class="course-pill">Hours of Service Training — Supervisors</span><span class="course-pill">Log Auditing: Property-Carrying Vehicles</span><span class="course-pill">Retention Training for Supervisors</span><span class="course-pill">Safety and Security</span><span class="course-pill">Slips / Trips / Falls</span><span class="course-pill">Supervisory Training — The Basics</span><span class="course-pill">Train the Trainer</span><span class="course-pill">Trip Planning</span><span class="course-pill">Vehicle Inspections</span><span class="course-pill">Vehicle Inspections — Canada</span>
+              </div>
+            </div>
+            <div class="training-panel" id="panel-safety" role="tabpanel" hidden>
+              <div class="course-grid">
+                <span class="course-pill">Accident Procedures</span><span class="course-pill">Backing</span><span class="course-pill">Cargo Securement</span><span class="course-pill">Cornering Techniques</span><span class="course-pill">CSA Driver Training</span><span class="course-pill">CSA Supervisor Training</span><span class="course-pill">Defensive Driving</span><span class="course-pill">Driver Logs</span><span class="course-pill">Driving Grades</span><span class="course-pill">Emergency Maneuvers</span><span class="course-pill">Employee Security</span><span class="course-pill">Entry Level Driver</span><span class="course-pill">Extreme Driving Conditions</span><span class="course-pill">Hours of Service — Canadian</span><span class="course-pill">Hours of Service Training — Supervisors</span><span class="course-pill">Hours of Service: Property-Carrying Vehicles</span><span class="course-pill">Increasing Fuel Mileage</span><span class="course-pill">Log Auditing: Property-Carrying Vehicles</span><span class="course-pill">Longer Combination Vehicles</span><span class="course-pill">Maintenance Requirements</span><span class="course-pill">Night Driving</span><span class="course-pill">Roadside Inspections</span><span class="course-pill">Sharing the Highway</span><span class="course-pill">Skid Control</span><span class="course-pill">Transport Dangerous Goods — Labels</span><span class="course-pill">Transport Dangerous Goods — Marking</span><span class="course-pill">Transport Dangerous Goods — Placarding</span><span class="course-pill">Vehicle Breakdown and Road Repair</span>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-      </section>
-
-            <!-- ── Start a Trucking Company ── -->
-      <section class="section startup" id="startup" aria-labelledby="startup-title">
-        <div class="startup-copy animate">
-          <p class="eyebrow">New Carrier Setup</p>
-          <h2 id="startup-title">Your step-by-step guide to starting a trucking company.</h2>
-          <p>FSI takes new carriers from zero to operating — handling every regulatory requirement, authority application, and compliance program so you can focus on moving freight.</p>
-          <a class="button primary" href="#contact">Talk to FSI about getting started</a>
+        <div class="cta-strip light">
+          <p>Need a custom training program for your team?</p>
+          <button class="button primary" data-view="contact">Contact FSI</button>
         </div>
-        <ul class="startup-list animate" aria-label="Carrier setup services included">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            MTO / DOT Audits
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Canadian &amp; US Operating Authorities
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Drug &amp; Alcohol Testing Programs
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            C-TPAT, PIP &amp; CSA Compliance
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            IRP &amp; IFTA Registration
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            US / Canadian Bonds
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-            Driver Coach Training
-          </li>
-        </ul>
-      </section>
+      </div><!-- /view-training -->
 
-      <!-- ── How We Work ── -->
-      <section class="section process" id="coverage" aria-labelledby="process-title">
-        <div class="animate">
-          <p class="eyebrow">How We Work</p>
-          <h2 id="process-title">Clear communication from pickup to delivery.</h2>
+      <!-- ══════════════════════════════════════
+           STARTUP VIEW
+      ══════════════════════════════════════ -->
+      <div id="view-startup" class="view">
+        <div class="view-topbar">
+          <button class="back-btn" data-view="home"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4l-4 4 4 4"/></svg> Back</button>
+          <span class="view-crumb">Start a Trucking Company</span>
         </div>
-        <div class="timeline animate">
-          <div class="timeline-item">
-            <span>Plan</span>
-            <p>Confirm shipment details, timing, freight requirements, and the best service path.</p>
+        <section class="section startup">
+          <div class="startup-copy">
+            <p class="eyebrow">New Carrier Setup</p>
+            <h2 class="split-words">Your step-by-step guide to starting a trucking company.</h2>
+            <p>FSI takes new carriers from zero to operating — handling every regulatory requirement, authority application, and compliance program so you can focus on moving freight.</p>
+            <button class="button primary" data-view="contact">Talk to FSI about getting started</button>
           </div>
-          <div class="timeline-item">
-            <span>Coordinate</span>
-            <p>Arrange carrier support, pickup details, route needs, and delivery expectations.</p>
-          </div>
-          <div class="timeline-item">
-            <span>Update</span>
-            <p>Keep the right people informed so the shipment stays visible and decisions stay easy.</p>
-          </div>
-        </div>
-      </section>
+          <ul class="startup-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>MTO / DOT Audits</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Canadian &amp; US Operating Authorities</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Drug &amp; Alcohol Testing Programs</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>C-TPAT, PIP &amp; CSA Compliance</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>IRP &amp; IFTA Registration</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>US / Canadian Bonds</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Driver Coach Training</li>
+          </ul>
+        </section>
+      </div><!-- /view-startup -->
 
-      <!-- ── Contact ── -->
-      <section class="section contact" id="contact" aria-labelledby="contact-title">
-        <div class="contact-copy animate">
-          <p class="eyebrow">Get in Touch</p>
-          <h2 id="contact-title">Tell FSI what needs to move.</h2>
-          <p>Share your shipment details or ask about training and carrier setup — the team will follow up with availability, timing, and next steps.</p>
-          <div class="contact-list" aria-label="Contact details">
-            <a href="tel:9054580800">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.84a16 16 0 006.29 6.29l1.17-.74a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-              </svg>
-              905.458.0800
-            </a>
-            <a href="https://fsifreightsolutions.ca" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
-              </svg>
-              fsifreightsolutions.ca
-            </a>
-            <a href="https://maps.google.com/?q=30+Intermodal+Dr+%233+Brampton+ON+L6T+5K1" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              30 Intermodal Dr #3, Brampton, ON L6T 5K1
-            </a>
-          </div>
+      <!-- ══════════════════════════════════════
+           CONTACT VIEW
+      ══════════════════════════════════════ -->
+      <div id="view-contact" class="view">
+        <div class="view-topbar">
+          <button class="back-btn" data-view="home"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4l-4 4 4 4"/></svg> Back</button>
+          <span class="view-crumb">Get in Touch</span>
         </div>
-        <form class="contact-form animate" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <label>
-            Name
-            <input type="text" name="name" autocomplete="name" placeholder="Your name" required />
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required />
-          </label>
-          <label>
-            Phone <span class="label-optional">(optional)</span>
-            <input type="tel" name="phone" autocomplete="tel" placeholder="905-000-0000" />
-          </label>
-          <label>
-            How can we help?
-            <textarea name="message" rows="4" placeholder="Freight details, training inquiry, starting a company — tell us what you need" required></textarea>
-          </label>
-          <button class="button primary" type="submit">Send request</button>
-          <p class="form-note" role="status" aria-live="polite"></p>
-        </form>
-      </section>
+        <section class="section contact">
+          <div class="contact-copy">
+            <p class="eyebrow">Get in Touch</p>
+            <h2 class="split-words">Tell FSI what needs to move.</h2>
+            <p>Share your shipment details or ask about training and carrier setup — the team will follow up with availability, timing, and next steps.</p>
+            <div class="contact-list">
+              <a href="tel:9054580800"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.84a16 16 0 006.29 6.29l1.17-.74a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>905.458.0800</a>
+              <a href="https://fsifreightsolutions.ca" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>fsifreightsolutions.ca</a>
+              <a href="https://maps.google.com/?q=30+Intermodal+Dr+%233+Brampton+ON+L6T+5K1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>30 Intermodal Dr #3, Brampton, ON L6T 5K1</a>
+            </div>
+          </div>
+          <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <label>Name<input type="text" name="name" autocomplete="name" placeholder="Your name" required /></label>
+            <label>Email<input type="email" name="email" autocomplete="email" placeholder="you@example.com" required /></label>
+            <label>Phone <span class="label-optional">(optional)</span><input type="tel" name="phone" autocomplete="tel" placeholder="905-000-0000" /></label>
+            <label>How can we help?<textarea name="message" rows="4" placeholder="Freight details, training inquiry, starting a company — tell us what you need" required></textarea></label>
+            <button class="button primary" type="submit">Send request</button>
+            <p class="form-note" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div><!-- /view-contact -->
 
-    </main>
+    </main><!-- /views-wrap -->
 
     <footer class="site-footer">
       <div class="footer-brand">
@@ -427,6 +349,13 @@
         <p><a href="tel:9054580800">905.458.0800</a></p>
         <p><a href="https://fsifreightsolutions.ca" target="_blank" rel="noopener">fsifreightsolutions.ca</a></p>
       </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <button data-view="home">Home</button>
+        <button data-view="services">Services</button>
+        <button data-view="training">Training</button>
+        <button data-view="startup">Start a Company</button>
+        <button data-view="contact">Contact</button>
+      </nav>
       <p class="footer-copy">Copyright 2026 FSI Freight Solutions. All rights reserved.</p>
     </footer>
 
