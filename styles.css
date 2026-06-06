@@ -221,10 +221,87 @@ body::before {
   overflow:hidden; padding:132px clamp(20px,7vw,96px) 82px; color:#fff;
 }
 .hero-image,.hero-overlay { position:absolute; inset:0; width:100%; height:100%; }
-.hero-image { z-index:-2; object-fit:cover; }
+.hero-image {
+  z-index:-2; object-fit:cover;
+  will-change:transform;
+  animation:heroBurns 22s ease-in-out infinite;
+  transform-origin:62% 52%;
+}
+@keyframes heroBurns {
+  0%   { transform:scale(1.0)  translate(0,      0);     }
+  33%  { transform:scale(1.055) translate(-0.7%, 0.3%);  }
+  66%  { transform:scale(1.045) translate( 0.4%, -0.2%); }
+  100% { transform:scale(1.0)  translate(0,      0);     }
+}
 .hero-overlay { z-index:-1; background:linear-gradient(90deg,rgba(0,0,0,.88),rgba(0,0,0,.58) 46%,rgba(0,0,0,.18)),linear-gradient(0deg,rgba(0,0,0,.42),rgba(0,0,0,.02)); }
-.hero-content { width:min(760px,100%); }
-.hero-h1 { color:#fff; }
+
+/* ── Hero Cinematic FX ── */
+
+/* Red ambient pulse — engine idling feel */
+.hero-fx-glow {
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:radial-gradient(ellipse 58% 42% at 66% 74%, rgba(201,13,25,.24) 0%, transparent 62%);
+  animation:fxGlowBreath 5.5s ease-in-out infinite;
+  mix-blend-mode:screen;
+}
+@keyframes fxGlowBreath {
+  0%,100% { opacity:.4;  transform:scale(1);    }
+  50%     { opacity:.95; transform:scale(1.12); }
+}
+
+/* Warehouse dock lights — irregular flicker */
+.hero-fx-lights {
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 22% 32% at 83% 26%, rgba(255,215,100,.07) 0%, transparent 55%),
+    radial-gradient(ellipse 12% 22% at 96% 44%, rgba(255,215,100,.045) 0%, transparent 55%);
+  animation:fxLightFlicker 9s ease-in-out infinite;
+}
+@keyframes fxLightFlicker {
+  0%,100% { opacity:.55; }
+  18%     { opacity:.9;  }
+  30%     { opacity:.45; }
+  52%     { opacity:1;   }
+  67%     { opacity:.65; }
+  80%     { opacity:.5;  }
+  90%     { opacity:.92; }
+}
+
+/* Fog / low mist drifting across scene */
+.hero-fx-fog {
+  position:absolute; inset:-8% -6%; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse 88% 32% at 12% 68%, rgba(195,210,225,.06) 0%, transparent 58%),
+    radial-gradient(ellipse 65% 28% at 78% 55%, rgba(195,210,225,.04) 0%, transparent 52%);
+  animation:fxFogDrift 30s ease-in-out infinite alternate;
+}
+@keyframes fxFogDrift {
+  0%   { transform:translate(0,    0);    }
+  100% { transform:translate(2.8%, 1.2%); }
+}
+
+/* Wet pavement warm shimmer at bottom */
+.hero-fx-pavement {
+  position:absolute; bottom:0; left:0; right:0; height:48%;
+  pointer-events:none; z-index:0;
+  background:linear-gradient(to top,
+    rgba(201,13,25,.065)   0%,
+    rgba(170,120,60,.03)   18%,
+    transparent            55%
+  );
+  animation:fxPavementShimmer 6s ease-in-out infinite alternate;
+}
+@keyframes fxPavementShimmer {
+  0%   { opacity:.45; }
+  100% { opacity:.9;  }
+}
+
+/* Rain canvas */
+.hero-fx-rain {
+  position:absolute; inset:0; width:100%; height:100%;
+  pointer-events:none; z-index:1;
+}
+
 .hero-copy { max-width:640px; color:rgba(255,255,255,.82); font-size:clamp(1.05rem,1.8vw,1.28rem); line-height:1.65; }
 .hero-copy-reveal,.hero-actions-reveal,.hero-tagline-reveal { opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
 .hero-copy-reveal.show,.hero-actions-reveal.show,.hero-tagline-reveal.show { opacity:1; transform:none; }

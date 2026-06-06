@@ -323,13 +323,133 @@ catCards.forEach(card => {
   });
 });
 
-/* ── 10. CURSOR GLOW ── */
+/* ── 10. HERO RAIN CANVAS ── */
+(function initHeroRain() {
+  const canvas = document.getElementById('hero-rain');
+  if (!canvas) return;
+
+  // Skip on mobile — saves battery, looks fine without
+  if (window.innerWidth < 680) return;
+
+  const ctx  = canvas.getContext('2d');
+  const LEAN = 0.17;   // rain angle (radians, slight rightward lean)
+  const DENS = 8500;   // px² per drop — lower = denser
+  let drops = [], splashes = [], raf = null, running = false;
+
+  /* ── resize ── */
+  function resize() {
+    const hero = canvas.parentElement;
+    canvas.width  = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+    drops = [];
+    const n = Math.floor(canvas.width * canvas.height / DENS);
+    for (let i = 0; i < n; i++) drops.push(newDrop(true));
+  }
+
+  /* ── factories ── */
+  function newDrop(scatter) {
+    const v = 6 + Math.random() * 10;
+    return {
+      x:   Math.random() * (canvas.width + 160) - 80,
+      y:   scatter ? Math.random() * canvas.height : -14,
+      v,
+      len: 10 + Math.random() * 20,
+      a:   0.08 + Math.random() * 0.26,
+      w:   0.35 + Math.random() * 0.65,
+    };
+  }
+
+  function newSplash(x, y) {
+    for (let i = 0; i < 3; i++) {
+      splashes.push({
+        x, y,
+        vx:   (Math.random() - 0.5) * 2.8,
+        vy:  -(0.6 + Math.random() * 2.4),
+        r:    0.7 + Math.random() * 1.3,
+        life: 1,
+        dec:  0.05 + Math.random() * 0.055,
+      });
+    }
+  }
+
+  /* ── render loop ── */
+  function tick() {
+    if (!running) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const sinL = Math.sin(LEAN), cosL = Math.cos(LEAN);
+
+    // drops
+    for (let i = 0, n = drops.length; i < n; i++) {
+      const d = drops[i];
+      ctx.beginPath();
+      ctx.moveTo(d.x, d.y);
+      ctx.lineTo(d.x + sinL * d.len, d.y + cosL * d.len);
+      ctx.strokeStyle = `rgba(155,185,215,${d.a})`;
+      ctx.lineWidth   = d.w;
+      ctx.stroke();
+
+      d.y += d.v;
+      d.x += d.v * sinL * 0.7;
+
+      const floor = canvas.height * 0.62 + Math.random() * canvas.height * 0.38;
+      if (d.y > floor) {
+        if (Math.random() > 0.80) newSplash(d.x, d.y);
+        drops[i] = newDrop(false);
+      }
+    }
+
+    // splashes
+    for (let i = splashes.length - 1; i >= 0; i--) {
+      const s = splashes[i];
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, Math.max(0, s.r * s.life), 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(155,185,215,${(s.life * 0.32).toFixed(3)})`;
+      ctx.fill();
+      s.x  += s.vx;
+      s.y  += s.vy;
+      s.vy += 0.2;   // gravity
+      s.life -= s.dec;
+      if (s.life <= 0) splashes.splice(i, 1);
+    }
+
+    raf = requestAnimationFrame(tick);
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    resize();
+    tick();
+  }
+
+  function stop() {
+    running = false;
+    cancelAnimationFrame(raf);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  /* ── only run when hero is in viewport ── */
+  const hero = canvas.closest('.hero');
+  const obs  = new IntersectionObserver(entries => {
+    entries[0].isIntersecting ? start() : stop();
+  }, { threshold: 0.05 });
+
+  // Delay start until splash has exited (4.6s)
+  setTimeout(() => {
+    if (hero) obs.observe(hero);
+  }, 4700);
+
+  window.addEventListener('resize', () => { if (running) resize(); }, { passive: true });
+})();
+
+/* ── 11. CURSOR GLOW ── */
 document.addEventListener('mousemove', e => {
   document.documentElement.style.setProperty('--mx', e.clientX + 'px');
   document.documentElement.style.setProperty('--my', e.clientY + 'px');
 }, { passive: true });
 
-/* ── 11. BACK TO TOP ── */
+/* ── 12. BACK TO TOP ── */
 const backToTop = document.getElementById('back-to-top');
 if (backToTop) {
   const toggleBTT = () => backToTop.classList.toggle('visible', window.scrollY > 500);
