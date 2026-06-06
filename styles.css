@@ -411,6 +411,9 @@ body::before {
 .hero-actions { display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; }
 .hero-tagline { margin-top:40px; margin-bottom:0; color:rgba(255,255,255,.4); font-style:italic; font-size:.88rem; font-weight:500; }
 
+/* ── Perspective Scroll Reveal base ── */
+[data-psr] { transition: none; } /* JS drives this — no CSS transition interference */
+
 /* ── About (dark split + live route map) ── */
 .about { background:var(--deep); color:#fff; overflow:hidden; }
 .about .eyebrow { color:var(--red); }

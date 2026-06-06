@@ -499,7 +499,7 @@ document.querySelectorAll('.startup-step').forEach((step, i) => {
   startupStepObs.observe(step);
 });
 
-/* ── 15. ABOUT ROUTE MAP CANVAS ── */
+/* ── 15. ABOUT ROUTE MAP CANVAS (full Canada + US) ── */
 (function initAboutMap() {
   const wrap   = document.querySelector('.about-map-wrap');
   const canvas = document.getElementById('about-map');
@@ -508,177 +508,260 @@ document.querySelectorAll('.startup-step').forEach((step, i) => {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
 
-  /* Virtual coordinate space (map layout) */
-  const VW = 600, VH = 430;
+  /* ─── Virtual coordinate space ───
+     Bounds: lon -128W→-52W (76°), lat 24N→57N (33°)
+     x(lon) = (lon + 128) / 76 * 800   (west → left)
+     y(lat) = (57 - lat)  / 33 * 500   (north → top)
+  ─────────────────────────────────── */
+  const VW = 800, VH = 500;
 
-  /* Key cities: [name, vx, vy, isHome] */
+  /* 19 cities across Canada + US */
   const cities = [
-    { name:'Brampton, ON', vx:388, vy:168, home:true  },
-    { name:'Montréal',     vx:447, vy:143, home:false },
-    { name:'Detroit',      vx:354, vy:192, home:false },
-    { name:'Chicago',      vx:312, vy:198, home:false },
-    { name:'New York',     vx:444, vy:215, home:false },
-    { name:'Cleveland',    vx:377, vy:203, home:false },
-    { name:'Nashville',    vx:345, vy:295, home:false },
-    { name:'Atlanta',      vx:350, vy:328, home:false },
-    { name:'Dallas',       vx:236, vy:340, home:false },
-    { name:'Miami',        vx:382, vy:408, home:false },
-    { name:'Los Angeles',  vx:54,  vy:320, home:false },
-    { name:'Minneapolis',  vx:266, vy:152, home:false },
+    /* idx  name                 vx   vy  home  ldr */
+    { name:'Brampton, ON',  vx:512, vy:210, home:true,  ldr:'r' }, // 0 — HQ
+    { name:'Montréal',      vx:573, vy:184, home:false, ldr:'l' }, // 1
+    { name:'Halifax',       vx:678, vy:197, home:false, ldr:'l' }, // 2
+    { name:'Winnipeg',      vx:325, vy:119, home:false, ldr:'r' }, // 3
+    { name:'Calgary',       vx:146, vy:103, home:false, ldr:'r' }, // 4
+    { name:'Vancouver',     vx: 52, vy:128, home:false, ldr:'l' }, // 5
+    { name:'Seattle',       vx: 60, vy:153, home:false, ldr:'r' }, // 6
+    { name:'San Francisco', vx: 59, vy:297, home:false, ldr:'l' }, // 7
+    { name:'Los Angeles',   vx:103, vy:352, home:false, ldr:'r' }, // 8
+    { name:'Phoenix',       vx:167, vy:362, home:false, ldr:'r' }, // 9
+    { name:'Denver',        vx:243, vy:269, home:false, ldr:'r' }, // 10
+    { name:'Minneapolis',   vx:366, vy:193, home:false, ldr:'r' }, // 11
+    { name:'Chicago',       vx:425, vy:237, home:false, ldr:'r' }, // 12
+    { name:'Detroit',       vx:474, vy:231, home:false, ldr:'r' }, // 13
+    { name:'New York',      vx:568, vy:254, home:false, ldr:'l' }, // 14
+    { name:'Atlanta',       vx:459, vy:357, home:false, ldr:'r' }, // 15
+    { name:'Dallas',        vx:328, vy:371, home:false, ldr:'l' }, // 16
+    { name:'Houston',       vx:343, vy:415, home:false, ldr:'r' }, // 17
+    { name:'Miami',         vx:503, vy:474, home:false, ldr:'l' }, // 18
   ];
 
-  /* Routes: bezier control points in virtual space */
-  const routes = [
-    { from:0, to:1,  cp1:{x:418,y:156}, cp2:{x:447,y:144} }, // Brampton → Montréal
-    { from:0, to:2,  cp1:{x:372,y:178}, cp2:{x:356,y:190} }, // Brampton → Detroit
-    { from:0, to:4,  cp1:{x:415,y:190}, cp2:{x:442,y:212} }, // Brampton → New York
-    { from:0, to:5,  cp1:{x:382,y:182}, cp2:{x:378,y:200} }, // Brampton → Cleveland
-    { from:2, to:3,  cp1:{x:332,y:194}, cp2:{x:315,y:197} }, // Detroit → Chicago
-    { from:3, to:11, cp1:{x:288,y:175}, cp2:{x:268,y:155} }, // Chicago → Minneapolis
-    { from:3, to:7,  cp1:{x:318,y:262}, cp2:{x:340,y:312} }, // Chicago → Atlanta
-    { from:4, to:9,  cp1:{x:450,y:338}, cp2:{x:405,y:390} }, // New York → Miami
-    { from:7, to:8,  cp1:{x:295,y:335}, cp2:{x:252,y:340} }, // Atlanta → Dallas
-    { from:7, to:9,  cp1:{x:364,y:373}, cp2:{x:380,y:398} }, // Atlanta → Miami
-    { from:8, to:10, cp1:{x:148,y:330}, cp2:{x:92,  y:322} }, // Dallas → LA
-    { from:5, to:6,  cp1:{x:362,y:250}, cp2:{x:348,y:280} }, // Cleveland → Nashville
+  /* Auto-curved bezier: gentle arc perpendicular to each route */
+  function autoCP(ai, bi) {
+    const a = cities[ai], b = cities[bi];
+    const dx = b.vx - a.vx, dy = b.vy - a.vy;
+    const len = Math.sqrt(dx*dx + dy*dy) || 1;
+    const px = -dy / len, py = dx / len; // perpendicular unit vector
+    const ofs = Math.min(0.15, 55 / len) * len; // gentle arc
+    return {
+      cp1: { x: a.vx + dx*0.33 + px*ofs, y: a.vy + dy*0.33 + py*ofs },
+      cp2: { x: a.vx + dx*0.67 + px*ofs, y: a.vy + dy*0.67 + py*ofs },
+    };
+  }
+
+  /* 22 freight corridors — [from, to] */
+  const PAIRS = [
+    [5, 4],  // Vancouver → Calgary       (Trans-Canada)
+    [4, 3],  // Calgary   → Winnipeg
+    [3, 0],  // Winnipeg  → Brampton
+    [0, 1],  // Brampton  → Montréal
+    [1, 2],  // Montréal  → Halifax
+    [4, 0],  // Calgary   → Brampton      (direct west→east)
+    [5, 6],  // Vancouver → Seattle       (cross-border)
+    [6, 7],  // Seattle   → San Francisco (I-5)
+    [7, 8],  // SF        → Los Angeles
+    [8, 9],  // LA        → Phoenix
+    [9,16],  // Phoenix   → Dallas
+    [6,10],  // Seattle   → Denver        (diagonal midwest)
+    [10,12], // Denver    → Chicago
+    [0,13],  // Brampton  → Detroit
+    [13,12], // Detroit   → Chicago
+    [12,11], // Chicago   → Minneapolis
+    [11, 3], // Minneapolis→ Winnipeg
+    [12,16], // Chicago   → Dallas        (central US)
+    [0,14],  // Brampton  → New York
+    [14,15], // New York  → Atlanta
+    [15,18], // Atlanta   → Miami
+    [15,16], // Atlanta   → Dallas
+    [16,17], // Dallas    → Houston
   ];
 
-  /* Freight movers — one per route, staggered start positions */
+  /* Build routes with auto control-points */
+  const routes = PAIRS.map(([fi, ti]) => ({ from:fi, to:ti, ...autoCP(fi, ti) }));
+
+  /* One freight mover per route, staggered */
   const movers = routes.map((_, i) => ({
-    routeIdx: i,
-    t: (i / routes.length) + Math.random() * 0.08,
-    speed: 0.00062 + Math.random() * 0.00048,
+    ri: i,
+    t:  (i / routes.length + Math.random() * 0.04) % 1,
+    spd: 0.00055 + Math.random() * 0.00045,
   }));
 
-  let W = 0, H = 0, scale = 1, offX = 0, offY = 0, raf = null;
+  let W = 0, H = 0, sc = 1, ox = 0, oy = 0, raf = null;
 
   function resize() {
     const r = wrap.getBoundingClientRect();
     W = r.width; H = r.height;
     canvas.width  = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // 1 ctx unit = 1 CSS pixel
-    scale = Math.min(W / VW, H / VH) * 0.92;
-    offX  = (W - VW * scale) / 2;
-    offY  = (H - VH * scale) / 2;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // 1 ctx unit = 1 CSS px
+    sc = Math.min(W / VW, H / VH) * 0.90;
+    ox = (W - VW * sc) / 2;
+    oy = (H - VH * sc) / 2;
   }
 
-  const cx = vx => offX + vx * scale;
-  const cy = vy => offY + vy * scale;
+  const cx = vx => ox + vx * sc;
+  const cy = vy => oy + vy * sc;
 
-  function bezierAt(t, p0, cp1, cp2, p1) {
+  function bez(t, a, c1, c2, b) {
     const u = 1 - t;
     return {
-      x: u*u*u*p0.x + 3*u*u*t*cp1.x + 3*u*t*t*cp2.x + t*t*t*p1.x,
-      y: u*u*u*p0.y + 3*u*u*t*cp1.y + 3*u*t*t*cp2.y + t*t*t*p1.y,
+      x: u*u*u*a.x + 3*u*u*t*c1.x + 3*u*t*t*c2.x + t*t*t*b.x,
+      y: u*u*u*a.y + 3*u*u*t*c1.y + 3*u*t*t*c2.y + t*t*t*b.y,
     };
   }
 
   function draw(ts) {
     ctx.clearRect(0, 0, W, H);
 
-    /* — Dot grid background — */
-    const sp = 22 * scale, dr = 0.85 * scale;
-    ctx.fillStyle = 'rgba(255,255,255,0.052)';
-    for (let x = offX % sp; x < W; x += sp)
-      for (let y = offY % sp; y < H; y += sp) {
-        ctx.beginPath(); ctx.arc(x, y, dr, 0, Math.PI * 2); ctx.fill();
+    /* ── Dot grid ── */
+    const sp = 20 * sc, dr = 0.78 * sc;
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    for (let x = ox % sp; x < W; x += sp)
+      for (let y = oy % sp; y < H; y += sp) {
+        ctx.beginPath(); ctx.arc(x, y, dr, 0, Math.PI*2); ctx.fill();
       }
 
-    /* — Route lines (dashed bezier arcs) — */
+    /* ── Route arcs ── */
     routes.forEach(r => {
       const f = cities[r.from], t = cities[r.to];
       ctx.beginPath();
       ctx.moveTo(cx(f.vx), cy(f.vy));
       ctx.bezierCurveTo(cx(r.cp1.x), cy(r.cp1.y), cx(r.cp2.x), cy(r.cp2.y), cx(t.vx), cy(t.vy));
-      ctx.setLineDash([3.5 * scale, 10 * scale]);
-      ctx.strokeStyle = 'rgba(201,13,25,0.22)';
-      ctx.lineWidth = 1.1 * scale;
+      ctx.setLineDash([3 * sc, 9 * sc]);
+      ctx.strokeStyle = 'rgba(201,13,25,0.2)';
+      ctx.lineWidth = 1.0 * sc;
       ctx.stroke();
       ctx.setLineDash([]);
     });
 
-    /* — Freight movers — */
+    /* ── Freight movers ── */
     movers.forEach(m => {
-      m.t += m.speed;
-      if (m.t > 1) m.t -= 1;
-      const r  = routes[m.routeIdx];
+      m.t = (m.t + m.spd) % 1;
+      const r  = routes[m.ri];
       const f  = cities[r.from], t = cities[r.to];
-      const pt = bezierAt(m.t, {x:f.vx,y:f.vy}, r.cp1, r.cp2, {x:t.vx,y:t.vy});
+      const pt = bez(m.t, {x:f.vx,y:f.vy}, r.cp1, r.cp2, {x:t.vx,y:t.vy});
       const px = cx(pt.x), py = cy(pt.y);
-      /* Glow aura */
-      const grd = ctx.createRadialGradient(px, py, 0, px, py, 8 * scale);
-      grd.addColorStop(0, 'rgba(201,13,25,0.75)');
-      grd.addColorStop(1, 'rgba(201,13,25,0)');
-      ctx.fillStyle = grd;
-      ctx.beginPath(); ctx.arc(px, py, 8 * scale, 0, Math.PI * 2); ctx.fill();
-      /* Core dot */
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath(); ctx.arc(px, py, 2.2 * scale, 0, Math.PI * 2); ctx.fill();
+      const g  = ctx.createRadialGradient(px, py, 0, px, py, 7*sc);
+      g.addColorStop(0, 'rgba(201,13,25,0.8)');
+      g.addColorStop(1, 'rgba(201,13,25,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(px, py, 7*sc, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(px, py, 2*sc, 0, Math.PI*2); ctx.fill();
     });
 
-    /* — City nodes — */
+    /* ── City nodes ── */
     cities.forEach((city, i) => {
       const px = cx(city.vx), py = cy(city.vy);
-      const p  = (Math.sin(ts * 0.0017 + i * 0.7) + 1) / 2; // per-city phase offset
+      const p  = (Math.sin(ts * 0.0016 + i * 0.65) + 1) / 2;
 
       if (city.home) {
-        /* Brampton home base — triple rings */
+        /* Brampton — triple pulsing rings */
         ctx.beginPath();
-        ctx.arc(px, py, (10 + p * 12) * scale, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(201,13,25,${(0.22 - p * 0.18).toFixed(3)})`;
-        ctx.lineWidth = 1 * scale; ctx.stroke();
+        ctx.arc(px, py, (11 + p*13) * sc, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(201,13,25,${(0.2 - p*0.17).toFixed(3)})`;
+        ctx.lineWidth = 0.9*sc; ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(px, py, (6 + p * 5) * scale, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(201,13,25,${(0.45 - p * 0.2).toFixed(3)})`;
-        ctx.lineWidth = 1.2 * scale; ctx.stroke();
+        ctx.arc(px, py, (6.5 + p*5) * sc, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(201,13,25,${(0.48 - p*0.22).toFixed(3)})`;
+        ctx.lineWidth = 1.1*sc; ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(px, py, 5 * scale, 0, Math.PI * 2);
+        ctx.arc(px, py, 5*sc, 0, Math.PI*2);
         ctx.fillStyle = '#c90d19'; ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
-        ctx.lineWidth = 1.8 * scale; ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,0.92)';
+        ctx.lineWidth = 1.6*sc; ctx.stroke();
 
-        /* Label */
-        ctx.font = `700 ${10.5 * scale}px Inter,sans-serif`;
-        ctx.fillStyle = '#ffffff';
+        ctx.font = `700 ${10*sc}px Inter,sans-serif`;
+        ctx.fillStyle = '#fff';
         ctx.textAlign = 'left';
-        ctx.fillText(city.name, px + 9 * scale, py + 4 * scale);
+        ctx.fillText(city.name, px + 9*sc, py + 4*sc);
       } else {
-        /* Regular city */
+        /* Regular city — subtle pulse */
         ctx.beginPath();
-        ctx.arc(px, py, (3 + p * 5) * scale, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255,255,255,${(0.1 - p * 0.08).toFixed(3)})`;
-        ctx.lineWidth = 0.8 * scale; ctx.stroke();
+        ctx.arc(px, py, (3 + p*5)*sc, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(255,255,255,${(0.1 - p*0.08).toFixed(3)})`;
+        ctx.lineWidth = 0.7*sc; ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(px, py, 2.8 * scale, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255,255,255,0.62)'; ctx.fill();
+        ctx.arc(px, py, 2.5*sc, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.fill();
 
-        /* Label */
-        ctx.font = `500 ${8.2 * scale}px Inter,sans-serif`;
-        ctx.fillStyle = 'rgba(255,255,255,0.48)';
-        ctx.textAlign = 'left';
-        ctx.fillText(city.name, px + 6 * scale, py + 3 * scale);
+        ctx.font = `400 ${7.6*sc}px Inter,sans-serif`;
+        ctx.fillStyle = 'rgba(255,255,255,0.45)';
+        if (city.ldr === 'l') {
+          ctx.textAlign = 'right';
+          ctx.fillText(city.name, px - 5*sc, py + 3*sc);
+        } else {
+          ctx.textAlign = 'left';
+          ctx.fillText(city.name, px + 5*sc, py + 3*sc);
+        }
       }
     });
 
     raf = requestAnimationFrame(draw);
   }
 
-  /* — Pause when out of view (battery / perf) — */
+  /* Pause when not visible */
   const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-      if (!raf) raf = requestAnimationFrame(draw);
-    } else {
-      cancelAnimationFrame(raf); raf = null;
-    }
-  }, { threshold: 0.1 });
+    if (entries[0].isIntersecting) { if (!raf) raf = requestAnimationFrame(draw); }
+    else { cancelAnimationFrame(raf); raf = null; }
+  }, { threshold: 0.05 });
 
   resize();
   obs.observe(wrap);
-  window.addEventListener('resize', () => { resize(); }, { passive: true });
+  window.addEventListener('resize', resize, { passive: true });
+})();
+
+/* ── 15b. CONTAINER SCROLL — 3D PERSPECTIVE REVEAL ──────────────────────────
+   Inspired by ContainerScroll (Aceternity UI).
+   Elements with [data-psr="N"] start at rotateX(N deg) + scale(0.92) + opacity 0
+   and unfold to flat + opacity 1 as they enter the viewport on scroll.
+   Desktop only (≥ 680 px). Pauses computation via rAF throttle.
+──────────────────────────────────────────────────────────────────────────── */
+(function initPerspectiveReveal() {
+  if (window.innerWidth < 680) return;
+
+  const targets = Array.from(document.querySelectorAll('[data-psr]'));
+  if (!targets.length) return;
+
+  /* Set initial state */
+  targets.forEach(el => {
+    const angle = parseFloat(el.dataset.psr) || 18;
+    el.style.willChange      = 'transform, opacity';
+    el.style.transformOrigin = 'center 0%';
+    el.style.opacity         = '0';
+    el.style.transform       = `perspective(1100px) rotateX(${angle}deg) scale(0.92)`;
+  });
+
+  let ticking = false;
+
+  function update() {
+    const vh = window.innerHeight;
+    targets.forEach(el => {
+      const top  = el.getBoundingClientRect().top;
+      /* progress 0→1: element top moves from bottom-of-viewport to 40% down */
+      const p    = Math.max(0, Math.min(1, (vh - top) / (vh * 0.62)));
+      const ang  = parseFloat(el.dataset.psr) || 18;
+      const rotX = (ang  * (1 - p)).toFixed(2);
+      const sc   = (0.92 + 0.08 * p).toFixed(4);
+      const op   = Math.min(1, p * 1.9).toFixed(3);
+      el.style.transform = `perspective(1100px) rotateX(${rotX}deg) scale(${sc})`;
+      el.style.opacity   = op;
+    });
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+
+  /* First run — after splash clears */
+  setTimeout(update, 4750);
 })();
 
 /* ── 16. CONTACT FORM ── */
