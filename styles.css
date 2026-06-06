@@ -46,9 +46,9 @@ h3 { font-size:1.18rem; letter-spacing:-.01em; }
   font-size:clamp(80px,20vw,160px); line-height:1;
   letter-spacing:-.04em;
 }
-.sl-f { color:#fff; display:inline-block; animation:fromLeft .75s cubic-bezier(.22,1,.36,1) .25s both; }
-.sl-s { color:#fff; display:inline-block; animation:fromTop .75s cubic-bezier(.22,1,.36,1) .4s both; }
-.sl-i { color:var(--red); display:inline-block; font-style:italic; animation:fromBottom .75s cubic-bezier(.22,1,.36,1) .32s both; }
+.sl-f { color:#fff; display:inline-block; animation:fromLeft 1.15s cubic-bezier(.22,1,.36,1) .35s both; }
+.sl-s { color:#fff; display:inline-block; animation:fromTop 1.15s cubic-bezier(.22,1,.36,1) .58s both; }
+.sl-i { color:var(--red); display:inline-block; font-style:italic; animation:fromBottom 1.15s cubic-bezier(.22,1,.36,1) .46s both; }
 
 @keyframes fromLeft   { from { opacity:0; transform:translateX(-140px) rotate(-18deg); } to { opacity:1; transform:none; } }
 @keyframes fromTop    { from { opacity:0; transform:translateY(-140px) rotate(14deg);  } to { opacity:1; transform:none; } }
@@ -57,22 +57,30 @@ h3 { font-size:1.18rem; letter-spacing:-.01em; }
 .splash-name {
   margin:0; color:rgba(255,255,255,.6); font-size:clamp(.9rem,2vw,1.1rem);
   font-weight:700; letter-spacing:.18em; text-transform:uppercase;
-  animation:fadeUp .6s ease .9s both;
+  animation:fadeUp .7s ease 1.5s both;
 }
 .splash-line {
   width:0; height:2px; background:var(--red); border-radius:2px;
-  animation:lineGrow .6s cubic-bezier(.22,1,.36,1) 1.05s forwards;
+  animation:lineGrow .7s cubic-bezier(.22,1,.36,1) 1.7s forwards;
 }
 @keyframes lineGrow { to { width:200px; } }
 
 .splash-tagline {
   margin:0; color:rgba(255,255,255,.45); font-style:italic;
   font-size:clamp(.82rem,2vw,.96rem); font-weight:500; max-width:340px; line-height:1.6;
-  animation:fadeUp .6s ease 1.3s both;
+  animation:fadeUp .7s ease 2.0s both;
 }
 @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
 
-/* Sparkle particles */
+/* tsParticles ambient sparkles container */
+#tsparticles-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.splash-content { position: relative; z-index: 2; }
+
+/* Burst sparkle particles */
 .splash-particle {
   position:absolute; border-radius:50%; pointer-events:none;
   animation:sparkleOut .9s ease-out forwards; opacity:0;

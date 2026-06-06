@@ -27,12 +27,48 @@
     container.appendChild(p);
   }
 
-  // Exit at 3s
+  // tsParticles ambient sparkles — SparklesCore config adapted for vanilla JS
+  if (typeof tsParticles !== 'undefined') {
+    tsParticles.load('tsparticles-splash', {
+      fullScreen: { enable: false },
+      background: { color: { value: 'transparent' } },
+      fpsLimit: 60,
+      detectRetina: true,
+      interactivity: {
+        events: { onClick: { enable: false }, onHover: { enable: false } }
+      },
+      particles: {
+        number: {
+          value: 90,
+          density: { enable: true, area: 800 }
+        },
+        color: { value: ['#ffffff', '#c90d19', '#ff9999', 'rgba(255,255,255,0.5)'] },
+        shape: { type: 'circle' },
+        opacity: {
+          value: { min: 0.1, max: 0.9 },
+          animation: { enable: true, speed: 1.2, minimumValue: 0.05, sync: false }
+        },
+        size: {
+          value: { min: 0.4, max: 2.2 }
+        },
+        move: {
+          enable: true,
+          speed: { min: 0.08, max: 0.55 },
+          direction: 'none',
+          random: true,
+          straight: false,
+          outModes: { default: 'out' }
+        }
+      }
+    });
+  }
+
+  // Exit at 4.5s (letters + tagline fully settled)
   setTimeout(() => {
     document.body.style.overflow = '';
     splash.classList.add('is-leaving');
     splash.addEventListener('animationend', () => splash.remove(), { once: true });
-  }, 3000);
+  }, 4500);
 })();
 
 /* ── 2. HEADER ELEVATION ── */
@@ -142,7 +178,7 @@ function animateHero() {
   setTimeout(() => actions && actions.classList.add('show'), lastDelay + 250);
   setTimeout(() => tagline && tagline.classList.add('show'), lastDelay + 420);
 }
-setTimeout(animateHero, 3100); // starts just after splash exits
+setTimeout(animateHero, 4600); // starts just after splash exits
 
 /* ── 7. ANIMATE VIEW IN (called by router) ── */
 function animateViewIn(id, viewEl) {
