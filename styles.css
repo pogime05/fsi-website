@@ -372,7 +372,7 @@ body::before {
 /* Industrial red accent on the headline block */
 .hero-h1 {
   border-left:4px solid var(--red); padding-left:clamp(16px,2.4vw,28px);
-  font-size:clamp(2rem,9vw,6rem); line-height:1.02;
+  font-size:clamp(1.9rem,9vw,6rem); line-height:1.02;
   opacity:0; transform:translateY(20px);
   transition:opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1);
 }
@@ -782,7 +782,8 @@ input:focus,textarea:focus { outline:none; border-color:var(--red); box-shadow:0
   .hero { min-height:88vh; padding-top:120px; }
   h1 { font-size:clamp(3rem,14vw,4.5rem); }
   .about-inner,.process-inner,.contact,.startup,.system-inner { grid-template-columns:1fr; }
-  .system-visual { order:-1; max-width:440px; }
+  .system-visual { order:-1; max-width:440px; margin-inline:auto; width:100%; }
+  .system-list { justify-items:start; }
   .about-map-wrap { min-height:280px; }
   .trust-bar { grid-template-columns:repeat(2,1fr); }
   .trust-item { border-bottom:1px solid rgba(255,255,255,.08); }

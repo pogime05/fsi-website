@@ -576,6 +576,12 @@ document.querySelectorAll('.startup-step').forEach((step, i) => {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
 
+  /* FSI logo marker for the Brampton HQ node */
+  const logo = new Image();
+  let logoReady = false;
+  logo.onload = () => { logoReady = true; };
+  logo.src = 'assets/fsi-logo.png';
+
   /* ─── Virtual coordinate space ───
      Bounds: lon -128W→-52W (76°), lat 24N→57N (33°)
      x(lon) = (lon + 128) / 76 * 800   (west → left)
@@ -727,27 +733,51 @@ document.querySelectorAll('.startup-step').forEach((step, i) => {
       const p  = (Math.sin(ts * 0.0016 + i * 0.65) + 1) / 2;
 
       if (city.home) {
-        /* Brampton — triple pulsing rings */
+        /* Brampton HQ — pulsing rings + FSI logo marker */
         ctx.beginPath();
-        ctx.arc(px, py, (11 + p*13) * sc, 0, Math.PI*2);
+        ctx.arc(px, py, (18 + p*16) * sc, 0, Math.PI*2);
         ctx.strokeStyle = `rgba(201,13,25,${(0.2 - p*0.17).toFixed(3)})`;
         ctx.lineWidth = 0.9*sc; ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(px, py, (6.5 + p*5) * sc, 0, Math.PI*2);
-        ctx.strokeStyle = `rgba(201,13,25,${(0.48 - p*0.22).toFixed(3)})`;
+        ctx.arc(px, py, (12 + p*8) * sc, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(201,13,25,${(0.42 - p*0.2).toFixed(3)})`;
         ctx.lineWidth = 1.1*sc; ctx.stroke();
 
-        ctx.beginPath();
-        ctx.arc(px, py, 5*sc, 0, Math.PI*2);
-        ctx.fillStyle = '#c90d19'; ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,0.92)';
-        ctx.lineWidth = 1.6*sc; ctx.stroke();
+        if (logoReady && logo.naturalWidth) {
+          /* White "chip" behind the logo (logo art is dark, like the header) */
+          const lw   = 50 * sc;
+          const lh   = lw * (logo.naturalHeight / logo.naturalWidth);
+          const padX = 8 * sc, padY = 6 * sc;
+          const cw = lw + padX*2, ch = lh + padY*2;
+          const rx = px - cw/2, ry = py - ch/2, r = 6*sc;
 
-        ctx.font = `700 ${10*sc}px Inter,sans-serif`;
-        ctx.fillStyle = '#fff';
-        ctx.textAlign = 'left';
-        ctx.fillText(city.name, px + 9*sc, py + 4*sc);
+          ctx.beginPath();
+          if (ctx.roundRect) {
+            ctx.roundRect(rx, ry, cw, ch, r);
+          } else {
+            ctx.moveTo(rx+r, ry);
+            ctx.arcTo(rx+cw, ry, rx+cw, ry+ch, r);
+            ctx.arcTo(rx+cw, ry+ch, rx, ry+ch, r);
+            ctx.arcTo(rx, ry+ch, rx, ry, r);
+            ctx.arcTo(rx, ry, rx+cw, ry, r);
+            ctx.closePath();
+          }
+          ctx.fillStyle = '#fff';
+          ctx.shadowColor = 'rgba(201,13,25,0.55)';
+          ctx.shadowBlur = 14*sc;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          ctx.drawImage(logo, px - lw/2, py - lh/2, lw, lh);
+        } else {
+          /* Fallback dot until the logo image loads */
+          ctx.beginPath();
+          ctx.arc(px, py, 5*sc, 0, Math.PI*2);
+          ctx.fillStyle = '#c90d19'; ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.92)';
+          ctx.lineWidth = 1.6*sc; ctx.stroke();
+        }
       } else {
         /* Regular city — subtle pulse */
         ctx.beginPath();
