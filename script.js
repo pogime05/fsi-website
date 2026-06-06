@@ -5,66 +5,74 @@
 
 /* ── 1. SPLASH ── */
 (function initSplash() {
-  const splash    = document.getElementById('splash');
-  const container = document.getElementById('splash-particles');
+  const splash = document.getElementById('splash');
   document.body.style.overflow = 'hidden';
 
-  // Generate sparkle particles (burst at 1.1s)
-  const colors = ['#c90d19','#fff','#ff6b6b','rgba(255,255,255,.6)'];
-  for (let i = 0; i < 28; i++) {
-    const p   = document.createElement('span');
-    p.className = 'splash-particle';
-    const angle = (i / 28) * 360 + (Math.random() * 18 - 9);
-    const dist  = 90 + Math.random() * 110;
-    const size  = 4 + Math.random() * 7;
-    p.style.cssText = `
-      --tx: ${Math.cos(angle * Math.PI / 180) * dist}px;
-      --ty: ${Math.sin(angle * Math.PI / 180) * dist}px;
-      width: ${size}px; height: ${size}px;
-      background: ${colors[Math.floor(Math.random() * colors.length)]};
-      animation-delay: ${1.0 + Math.random() * 0.25}s;
-    `;
-    container.appendChild(p);
-  }
-
-  // tsParticles ambient sparkles — SparklesCore config adapted for vanilla JS
+  /* tsParticles — ambient drifting sparkles */
   if (typeof tsParticles !== 'undefined') {
     tsParticles.load('tsparticles-splash', {
       fullScreen: { enable: false },
       background: { color: { value: 'transparent' } },
       fpsLimit: 60,
       detectRetina: true,
-      interactivity: {
-        events: { onClick: { enable: false }, onHover: { enable: false } }
-      },
+      interactivity: { events: { onClick: { enable: false }, onHover: { enable: false } } },
       particles: {
-        number: {
-          value: 90,
-          density: { enable: true, area: 800 }
-        },
+        number: { value: 90, density: { enable: true, area: 800 } },
         color: { value: ['#ffffff', '#c90d19', '#ff9999', 'rgba(255,255,255,0.5)'] },
         shape: { type: 'circle' },
         opacity: {
           value: { min: 0.1, max: 0.9 },
           animation: { enable: true, speed: 1.2, minimumValue: 0.05, sync: false }
         },
-        size: {
-          value: { min: 0.4, max: 2.2 }
-        },
+        size: { value: { min: 0.4, max: 2.2 } },
         move: {
-          enable: true,
-          speed: { min: 0.08, max: 0.55 },
-          direction: 'none',
-          random: true,
-          straight: false,
+          enable: true, speed: { min: 0.08, max: 0.55 },
+          direction: 'none', random: true, straight: false,
           outModes: { default: 'out' }
         }
       }
     });
   }
 
-  // Exit at 4.5s (letters + tagline fully settled)
+  /* ── Micro-glitch: random letter gets a chromatic-aberration jolt ──
+     Uses Web Animations API — never conflicts with CSS animations        */
+  const slF = document.querySelector('.sl-f');
+  const slS = document.querySelector('.sl-s');
+  const slI = document.querySelector('.sl-i');
+  const glitchTargets = [slF, slS, slI].filter(Boolean);
+
+  function glitchFrames(isRed) {
+    // Chromatic aberration direction matches each letter's original travel direction
+    const r = isRed
+      ? [ 'rgba(255,200,50,.72)', 'rgba(255,40,180,.72)' ]
+      : [ 'rgba(255,20,60,.72)',  'rgba(20,110,255,.72)' ];
+    return [
+      { textShadow: `9px 2px 0 ${r[0]}, -9px -2px 0 ${r[1]}`,  transform: 'skewX(-5deg)' },
+      { textShadow: `-9px -2px 0 ${r[0]}, 9px 2px 0 ${r[1]}`,  transform: 'skewX(5deg) translateX(4px)' },
+      { textShadow: `5px 0 0 ${r[0].replace('.72','.45')}, -5px 0 0 ${r[1].replace('.72','.45')}`, transform: 'skewX(-2deg)' },
+      { textShadow: `2px 0 0 ${r[0].replace('.72','.18')}, -2px 0 0 ${r[1].replace('.72','.18')}`, transform: 'skewX(1deg)' },
+      { textShadow: 'none', transform: 'none' },
+    ];
+  }
+
+  let glitchTimer;
+  function scheduleGlitch() {
+    glitchTimer = setTimeout(() => {
+      if (!document.getElementById('splash')) return;
+      const el    = glitchTargets[Math.floor(Math.random() * glitchTargets.length)];
+      const isRed = el === slI;
+      el.animate(glitchFrames(isRed), {
+        duration: 280, easing: 'steps(4, jump-none)', fill: 'none',
+      });
+      scheduleGlitch();
+    }, 2000 + Math.random() * 2200);
+  }
+  /* Start glitch after all letters have fully landed (~1.7s) */
+  setTimeout(scheduleGlitch, 2000);
+
+  /* Exit at 4.5s */
   setTimeout(() => {
+    clearTimeout(glitchTimer);
     document.body.style.overflow = '';
     splash.classList.add('is-leaving');
     splash.addEventListener('animationend', () => splash.remove(), { once: true });
