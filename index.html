@@ -93,17 +93,40 @@
 
         <section class="section about" aria-label="About FSI">
           <div class="about-inner">
-            <div class="about-stat">
-              <div class="about-stat-main">
-                <span class="about-stat-num" data-count="24">24</span>
-                <span class="about-stat-suffix">/7</span>
-              </div>
-              <p>Freight coordination &amp; support</p>
-            </div>
             <div class="about-copy">
               <p class="eyebrow">Who We Are</p>
               <h2 class="split-words">The only partner you need to run, grow, or start a trucking operation.</h2>
               <p>FSI Freight Solutions is a Brampton-based transportation consultancy. We help carriers coordinate shipments, certify drivers through 60+ compliance programs, and navigate every step of launching a new carrier — from authorities and bonds to drug testing and driver coaching.</p>
+              <div class="about-stats-row">
+                <div class="about-stat-item">
+                  <div class="about-stat-main">
+                    <span class="about-stat-num" data-count="24">24</span>
+                    <span class="about-stat-suffix">/7</span>
+                  </div>
+                  <p>Freight support</p>
+                </div>
+                <div class="about-stat-item">
+                  <div class="about-stat-main">
+                    <span class="about-stat-num" data-count="60">60</span>
+                    <span class="about-stat-suffix">+</span>
+                  </div>
+                  <p>Training programs</p>
+                </div>
+                <div class="about-stat-item">
+                  <div class="about-stat-main">
+                    <span class="about-stat-str-inline">100%</span>
+                  </div>
+                  <p>Canada &amp; US</p>
+                </div>
+              </div>
+              <a class="button primary about-cta" href="#services" data-view="services">Explore our services</a>
+            </div>
+            <div class="about-map-wrap" aria-hidden="true">
+              <canvas id="about-map" class="about-map-canvas"></canvas>
+              <div class="about-map-badge">
+                <span class="about-map-dot"></span>
+                Live freight corridors
+              </div>
             </div>
           </div>
         </section>
@@ -115,6 +138,7 @@
           </div>
           <div class="teaser-grid">
             <button class="teaser-card" data-view="services">
+              <div class="tc-num">01</div>
               <div class="tc-glow"></div>
               <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
               <h3>Freight Coordination</h3>
@@ -122,6 +146,7 @@
               <span class="tc-cta">Explore <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </button>
             <button class="teaser-card" data-view="training">
+              <div class="tc-num">02</div>
               <div class="tc-glow"></div>
               <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
               <h3>Driver Training</h3>
@@ -129,6 +154,7 @@
               <span class="tc-cta">Explore <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </button>
             <button class="teaser-card" data-view="startup">
+              <div class="tc-num">03</div>
               <div class="tc-glow"></div>
               <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
               <h3>Start a Company</h3>
@@ -136,6 +162,7 @@
               <span class="tc-cta">Explore <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </button>
             <button class="teaser-card teaser-featured" data-view="contact">
+              <div class="tc-num">04</div>
               <div class="tc-glow"></div>
               <div class="tc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.84a16 16 0 006.29 6.29l1.17-.74a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
               <h3>Get a Quote</h3>

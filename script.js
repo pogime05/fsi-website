@@ -271,13 +271,10 @@ if (window.Motion) {
 
   // About section
   inView('.about', () => {
-    const stat = document.querySelector('.about-stat-num');
-    if (stat && stat.dataset.count) {
-      animate(0, parseInt(stat.dataset.count, 10), {
-        duration: 1.4, easing: [.22,1,.36,1],
-        onUpdate: v => { stat.textContent = Math.round(v); }
-      });
-    }
+    document.querySelectorAll('.about-stat-num[data-count]').forEach(el => {
+      const target = parseInt(el.dataset.count, 10);
+      animate(0, target, { duration:1.4, easing:[.22,1,.36,1], onUpdate: v => { el.textContent = Math.round(v); } });
+    });
     const copy = document.querySelector('.about-copy');
     if (copy) animate([copy], { opacity:[0,1], y:[30,0] }, { duration:.65, easing:[.22,1,.36,1] });
   }, { amount: .3 });
@@ -502,7 +499,189 @@ document.querySelectorAll('.startup-step').forEach((step, i) => {
   startupStepObs.observe(step);
 });
 
-/* ── 15. CONTACT FORM ── */
+/* ── 15. ABOUT ROUTE MAP CANVAS ── */
+(function initAboutMap() {
+  const wrap   = document.querySelector('.about-map-wrap');
+  const canvas = document.getElementById('about-map');
+  if (!wrap || !canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+
+  /* Virtual coordinate space (map layout) */
+  const VW = 600, VH = 430;
+
+  /* Key cities: [name, vx, vy, isHome] */
+  const cities = [
+    { name:'Brampton, ON', vx:388, vy:168, home:true  },
+    { name:'Montréal',     vx:447, vy:143, home:false },
+    { name:'Detroit',      vx:354, vy:192, home:false },
+    { name:'Chicago',      vx:312, vy:198, home:false },
+    { name:'New York',     vx:444, vy:215, home:false },
+    { name:'Cleveland',    vx:377, vy:203, home:false },
+    { name:'Nashville',    vx:345, vy:295, home:false },
+    { name:'Atlanta',      vx:350, vy:328, home:false },
+    { name:'Dallas',       vx:236, vy:340, home:false },
+    { name:'Miami',        vx:382, vy:408, home:false },
+    { name:'Los Angeles',  vx:54,  vy:320, home:false },
+    { name:'Minneapolis',  vx:266, vy:152, home:false },
+  ];
+
+  /* Routes: bezier control points in virtual space */
+  const routes = [
+    { from:0, to:1,  cp1:{x:418,y:156}, cp2:{x:447,y:144} }, // Brampton → Montréal
+    { from:0, to:2,  cp1:{x:372,y:178}, cp2:{x:356,y:190} }, // Brampton → Detroit
+    { from:0, to:4,  cp1:{x:415,y:190}, cp2:{x:442,y:212} }, // Brampton → New York
+    { from:0, to:5,  cp1:{x:382,y:182}, cp2:{x:378,y:200} }, // Brampton → Cleveland
+    { from:2, to:3,  cp1:{x:332,y:194}, cp2:{x:315,y:197} }, // Detroit → Chicago
+    { from:3, to:11, cp1:{x:288,y:175}, cp2:{x:268,y:155} }, // Chicago → Minneapolis
+    { from:3, to:7,  cp1:{x:318,y:262}, cp2:{x:340,y:312} }, // Chicago → Atlanta
+    { from:4, to:9,  cp1:{x:450,y:338}, cp2:{x:405,y:390} }, // New York → Miami
+    { from:7, to:8,  cp1:{x:295,y:335}, cp2:{x:252,y:340} }, // Atlanta → Dallas
+    { from:7, to:9,  cp1:{x:364,y:373}, cp2:{x:380,y:398} }, // Atlanta → Miami
+    { from:8, to:10, cp1:{x:148,y:330}, cp2:{x:92,  y:322} }, // Dallas → LA
+    { from:5, to:6,  cp1:{x:362,y:250}, cp2:{x:348,y:280} }, // Cleveland → Nashville
+  ];
+
+  /* Freight movers — one per route, staggered start positions */
+  const movers = routes.map((_, i) => ({
+    routeIdx: i,
+    t: (i / routes.length) + Math.random() * 0.08,
+    speed: 0.00062 + Math.random() * 0.00048,
+  }));
+
+  let W = 0, H = 0, scale = 1, offX = 0, offY = 0, raf = null;
+
+  function resize() {
+    const r = wrap.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width  = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // 1 ctx unit = 1 CSS pixel
+    scale = Math.min(W / VW, H / VH) * 0.92;
+    offX  = (W - VW * scale) / 2;
+    offY  = (H - VH * scale) / 2;
+  }
+
+  const cx = vx => offX + vx * scale;
+  const cy = vy => offY + vy * scale;
+
+  function bezierAt(t, p0, cp1, cp2, p1) {
+    const u = 1 - t;
+    return {
+      x: u*u*u*p0.x + 3*u*u*t*cp1.x + 3*u*t*t*cp2.x + t*t*t*p1.x,
+      y: u*u*u*p0.y + 3*u*u*t*cp1.y + 3*u*t*t*cp2.y + t*t*t*p1.y,
+    };
+  }
+
+  function draw(ts) {
+    ctx.clearRect(0, 0, W, H);
+
+    /* — Dot grid background — */
+    const sp = 22 * scale, dr = 0.85 * scale;
+    ctx.fillStyle = 'rgba(255,255,255,0.052)';
+    for (let x = offX % sp; x < W; x += sp)
+      for (let y = offY % sp; y < H; y += sp) {
+        ctx.beginPath(); ctx.arc(x, y, dr, 0, Math.PI * 2); ctx.fill();
+      }
+
+    /* — Route lines (dashed bezier arcs) — */
+    routes.forEach(r => {
+      const f = cities[r.from], t = cities[r.to];
+      ctx.beginPath();
+      ctx.moveTo(cx(f.vx), cy(f.vy));
+      ctx.bezierCurveTo(cx(r.cp1.x), cy(r.cp1.y), cx(r.cp2.x), cy(r.cp2.y), cx(t.vx), cy(t.vy));
+      ctx.setLineDash([3.5 * scale, 10 * scale]);
+      ctx.strokeStyle = 'rgba(201,13,25,0.22)';
+      ctx.lineWidth = 1.1 * scale;
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+
+    /* — Freight movers — */
+    movers.forEach(m => {
+      m.t += m.speed;
+      if (m.t > 1) m.t -= 1;
+      const r  = routes[m.routeIdx];
+      const f  = cities[r.from], t = cities[r.to];
+      const pt = bezierAt(m.t, {x:f.vx,y:f.vy}, r.cp1, r.cp2, {x:t.vx,y:t.vy});
+      const px = cx(pt.x), py = cy(pt.y);
+      /* Glow aura */
+      const grd = ctx.createRadialGradient(px, py, 0, px, py, 8 * scale);
+      grd.addColorStop(0, 'rgba(201,13,25,0.75)');
+      grd.addColorStop(1, 'rgba(201,13,25,0)');
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(px, py, 8 * scale, 0, Math.PI * 2); ctx.fill();
+      /* Core dot */
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(px, py, 2.2 * scale, 0, Math.PI * 2); ctx.fill();
+    });
+
+    /* — City nodes — */
+    cities.forEach((city, i) => {
+      const px = cx(city.vx), py = cy(city.vy);
+      const p  = (Math.sin(ts * 0.0017 + i * 0.7) + 1) / 2; // per-city phase offset
+
+      if (city.home) {
+        /* Brampton home base — triple rings */
+        ctx.beginPath();
+        ctx.arc(px, py, (10 + p * 12) * scale, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(201,13,25,${(0.22 - p * 0.18).toFixed(3)})`;
+        ctx.lineWidth = 1 * scale; ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(px, py, (6 + p * 5) * scale, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(201,13,25,${(0.45 - p * 0.2).toFixed(3)})`;
+        ctx.lineWidth = 1.2 * scale; ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(px, py, 5 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = '#c90d19'; ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.lineWidth = 1.8 * scale; ctx.stroke();
+
+        /* Label */
+        ctx.font = `700 ${10.5 * scale}px Inter,sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'left';
+        ctx.fillText(city.name, px + 9 * scale, py + 4 * scale);
+      } else {
+        /* Regular city */
+        ctx.beginPath();
+        ctx.arc(px, py, (3 + p * 5) * scale, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,255,255,${(0.1 - p * 0.08).toFixed(3)})`;
+        ctx.lineWidth = 0.8 * scale; ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(px, py, 2.8 * scale, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.62)'; ctx.fill();
+
+        /* Label */
+        ctx.font = `500 ${8.2 * scale}px Inter,sans-serif`;
+        ctx.fillStyle = 'rgba(255,255,255,0.48)';
+        ctx.textAlign = 'left';
+        ctx.fillText(city.name, px + 6 * scale, py + 3 * scale);
+      }
+    });
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  /* — Pause when out of view (battery / perf) — */
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      if (!raf) raf = requestAnimationFrame(draw);
+    } else {
+      cancelAnimationFrame(raf); raf = null;
+    }
+  }, { threshold: 0.1 });
+
+  resize();
+  obs.observe(wrap);
+  window.addEventListener('resize', () => { resize(); }, { passive: true });
+})();
+
+/* ── 16. CONTACT FORM ── */
 const form = document.querySelector('.contact-form');
 const note = form ? form.querySelector('.form-note') : null;
 if (form && note) {
