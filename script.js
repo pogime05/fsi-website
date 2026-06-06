@@ -147,9 +147,12 @@ window.addEventListener('popstate', e => {
   showView(id);
 });
 
-// Initial hash routing
-const initHash = location.hash.slice(1);
-if (initHash && document.getElementById('view-' + initHash)) showView(initHash);
+// Always land on Home after a refresh / direct load — ignore any deep-link hash
+// (e.g. a leftover "#services" in the URL from earlier navigation). The home
+// view is the default-active view in the markup, so we just normalise the URL.
+if (location.hash && location.hash !== '#home') {
+  history.replaceState({ view: 'home' }, '', location.pathname + location.search);
+}
 
 /* ── 5. WORD-SPLIT HEADINGS ── */
 function splitWords(el) {
