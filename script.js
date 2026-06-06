@@ -227,9 +227,20 @@ function animateViewIn(id, viewEl) {
   }
 
   if (id === 'startup') {
-    const items = viewEl.querySelectorAll('.startup-list li');
-    animate(items, { opacity:[0,1], x:[-30,0] }, { delay:stagger(.07), duration:.55, easing:[.22,1,.36,1] });
     revealSplitWords(viewEl);
+    // Startup steps animate in via IntersectionObserver (already wired)
+    // Re-observe them since we re-show the view
+    viewEl.querySelectorAll('.startup-step').forEach((step, i) => {
+      step.style.opacity = '0';
+      step.style.transform = 'translateX(-24px)';
+      step.style.transition = `opacity .55s ease ${i * 0.08}s, transform .55s cubic-bezier(.22,1,.36,1) ${i * 0.08}s`;
+    });
+    setTimeout(() => {
+      viewEl.querySelectorAll('.startup-step').forEach(step => {
+        step.style.opacity = '1';
+        step.style.transform = 'none';
+      });
+    }, 150);
   }
 
   if (id === 'contact') {
@@ -312,7 +323,58 @@ catCards.forEach(card => {
   });
 });
 
-/* ── 10. CONTACT FORM ── */
+/* ── 10. CURSOR GLOW ── */
+document.addEventListener('mousemove', e => {
+  document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+  document.documentElement.style.setProperty('--my', e.clientY + 'px');
+}, { passive: true });
+
+/* ── 11. BACK TO TOP ── */
+const backToTop = document.getElementById('back-to-top');
+if (backToTop) {
+  const toggleBTT = () => backToTop.classList.toggle('visible', window.scrollY > 500);
+  window.addEventListener('scroll', toggleBTT, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+/* ── 12. HERO SCROLL INDICATOR ── */
+const heroScroll = document.getElementById('hero-scroll');
+if (heroScroll) {
+  window.addEventListener('scroll', () => {
+    heroScroll.classList.toggle('hidden', window.scrollY > 80);
+  }, { passive: true });
+}
+
+/* ── 13. TIMELINE ITEM REVEAL (services view) ── */
+const timelineObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const items = e.target.querySelectorAll('.timeline-item');
+      items.forEach((item, i) => setTimeout(() => item.classList.add('reveal'), i * 140));
+      timelineObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.timeline').forEach(t => timelineObs.observe(t));
+
+/* ── 14. STARTUP STEPS REVEAL ── */
+const startupStepObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'none';
+      startupStepObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.startup-step').forEach((step, i) => {
+  step.style.opacity = '0';
+  step.style.transform = 'translateX(-24px)';
+  step.style.transition = `opacity .55s ease ${i * 0.1}s, transform .55s cubic-bezier(.22,1,.36,1) ${i * 0.1}s`;
+  startupStepObs.observe(step);
+});
+
+/* ── 15. CONTACT FORM ── */
 const form = document.querySelector('.contact-form');
 const note = form ? form.querySelector('.form-note') : null;
 if (form && note) {
