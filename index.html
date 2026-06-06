@@ -75,7 +75,16 @@
           <canvas class="hero-fx-rain"  id="hero-rain" aria-hidden="true"></canvas>
           <div class="hero-content">
             <p class="eyebrow">FSI Freight Solutions — Brampton, ON</p>
-            <h1 id="hero-title" class="hero-h1">Freight made simple,<br>reliable, and ready to move.</h1>
+            <h1 id="hero-title" class="hero-h1">
+              <span class="hero-line">Freight that</span>
+              <span class="hero-rotate" aria-label="never stops">
+                <span class="hero-rotate-word">never stops.</span>
+                <span class="hero-rotate-word">crosses borders.</span>
+                <span class="hero-rotate-word">stays compliant.</span>
+                <span class="hero-rotate-word">moves on time.</span>
+                <span class="hero-rotate-word">never sleeps.</span>
+              </span>
+            </h1>
             <p class="hero-copy hero-copy-reveal">
               Full-service transportation support — freight coordination, driver training, and carrier compliance. Everything your trucking operation needs, under one roof.
             </p>
@@ -117,6 +126,12 @@
                     <span class="about-stat-str-inline">100%</span>
                   </div>
                   <p>Canada &amp; US</p>
+                </div>
+                <div class="about-stat-item">
+                  <div class="about-stat-main">
+                    <span class="about-stat-str-inline" style="font-size:clamp(1.4rem,2.6vw,2rem);">Brampton</span>
+                  </div>
+                  <p>Ontario HQ</p>
                 </div>
               </div>
               <a class="button primary about-cta" href="#services" data-view="services">Explore our services</a>
@@ -169,6 +184,64 @@
               <p>Tell FSI what needs to move — follow up with pricing and availability.</p>
               <span class="tc-cta">Contact us <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </button>
+          </div>
+        </section>
+
+        <section class="section system-section" aria-labelledby="system-title">
+          <div class="system-inner">
+            <div class="system-visual" data-psr="12">
+              <svg viewBox="0 0 600 220" class="truck-wireframe" role="img" aria-label="FSi line-drawn semi truck">
+                <g class="truck-draw">
+                  <!-- ground line -->
+                  <line x1="10" y1="200" x2="590" y2="200" stroke="rgba(201,13,25,.35)"/>
+                  <!-- trailer (box van) -->
+                  <rect x="20" y="36" width="332" height="130" rx="7" stroke="#c90d19"/>
+                  <!-- rear door seam + side ribs -->
+                  <line x1="34" y1="40" x2="34" y2="162" stroke="rgba(255,255,255,.3)"/>
+                  <line x1="140" y1="40" x2="140" y2="162" stroke="rgba(255,255,255,.18)"/>
+                  <line x1="246" y1="40" x2="246" y2="162" stroke="rgba(255,255,255,.18)"/>
+                  <!-- landing gear -->
+                  <line x1="300" y1="166" x2="300" y2="186" stroke="#c90d19"/>
+                  <line x1="290" y1="186" x2="312" y2="186" stroke="#c90d19"/>
+                  <!-- tractor cab + hood (conventional) -->
+                  <path d="M360 166 L360 78 Q360 66 372 66 L448 66 L470 96 L520 96 L544 118 L558 118 Q568 118 568 130 L568 166 Z" stroke="#c90d19"/>
+                  <!-- windshield -->
+                  <path d="M454 72 L468 94 L454 94 Z" stroke="rgba(255,255,255,.4)"/>
+                  <!-- door seam -->
+                  <line x1="410" y1="96" x2="410" y2="166" stroke="rgba(255,255,255,.3)"/>
+                  <!-- fuel tank -->
+                  <rect x="372" y="142" width="40" height="18" rx="9" stroke="rgba(255,255,255,.3)"/>
+                  <!-- grille / bumper hint -->
+                  <line x1="568" y1="150" x2="558" y2="150" stroke="rgba(255,255,255,.35)"/>
+                  <!-- wheels: trailer tandem -->
+                  <circle cx="84"  cy="178" r="22" stroke="#c90d19"/>
+                  <circle cx="134" cy="178" r="22" stroke="#c90d19"/>
+                  <!-- wheels: drive tandem -->
+                  <circle cx="396" cy="178" r="22" stroke="#c90d19"/>
+                  <circle cx="446" cy="178" r="22" stroke="#c90d19"/>
+                  <!-- wheel: steer -->
+                  <circle cx="528" cy="178" r="22" stroke="#c90d19"/>
+                  <!-- hubs -->
+                  <circle cx="84"  cy="178" r="7" stroke="rgba(255,255,255,.4)"/>
+                  <circle cx="134" cy="178" r="7" stroke="rgba(255,255,255,.4)"/>
+                  <circle cx="396" cy="178" r="7" stroke="rgba(255,255,255,.4)"/>
+                  <circle cx="446" cy="178" r="7" stroke="rgba(255,255,255,.4)"/>
+                  <circle cx="528" cy="178" r="7" stroke="rgba(255,255,255,.4)"/>
+                </g>
+              </svg>
+            </div>
+            <div class="system-copy">
+              <p class="eyebrow">The FSi System</p>
+              <h2 id="system-title" class="split-words">Precision logistics.<br>Compliance built in.</h2>
+              <p class="system-body">FSI doesn't just move freight — we build compliant carriers. From dispatch to driver certification, every load is backed by 60+ training programs and full regulatory coverage.</p>
+              <ul class="system-list">
+                <li>24/7 dispatch &amp; coordination</li>
+                <li>MTO / DOT audit-ready compliance</li>
+                <li>Cross-border authority coverage</li>
+                <li>60+ certified driver training modules</li>
+                <li>Drug &amp; alcohol program management</li>
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -448,6 +521,30 @@
 
     </main><!-- /views-wrap -->
 
+    <div class="compliance-strip" aria-label="FSI capabilities">
+      <div class="compliance-track">
+        <span>24/7 Freight Coordination</span><span class="dot">●</span>
+        <span>TL · LTL · Expedited</span><span class="dot">●</span>
+        <span>Canada &amp; US Authority Setup</span><span class="dot">●</span>
+        <span>MTO / DOT Audit Support</span><span class="dot">●</span>
+        <span>C-TPAT · PIP · CSA Programs</span><span class="dot">●</span>
+        <span>Drug &amp; Alcohol Testing</span><span class="dot">●</span>
+        <span>IRP &amp; IFTA Registration</span><span class="dot">●</span>
+        <span>US &amp; Canadian Bonds</span><span class="dot">●</span>
+        <span>60+ Driver Training Programs</span><span class="dot">●</span>
+        <!-- duplicate set for seamless loop -->
+        <span>24/7 Freight Coordination</span><span class="dot">●</span>
+        <span>TL · LTL · Expedited</span><span class="dot">●</span>
+        <span>Canada &amp; US Authority Setup</span><span class="dot">●</span>
+        <span>MTO / DOT Audit Support</span><span class="dot">●</span>
+        <span>C-TPAT · PIP · CSA Programs</span><span class="dot">●</span>
+        <span>Drug &amp; Alcohol Testing</span><span class="dot">●</span>
+        <span>IRP &amp; IFTA Registration</span><span class="dot">●</span>
+        <span>US &amp; Canadian Bonds</span><span class="dot">●</span>
+        <span>60+ Driver Training Programs</span><span class="dot">●</span>
+      </div>
+    </div>
+
     <footer class="site-footer">
       <div class="footer-brand">
         <img src="assets/fsi-logo.png" alt="FSI Freight Solutions" />
@@ -466,7 +563,7 @@
         <button data-view="startup">Start a Company</button>
         <button data-view="contact">Contact</button>
       </nav>
-      <p class="footer-copy">Copyright 2026 FSI Freight Solutions. All rights reserved.</p>
+      <p class="footer-copy">© 2026 FSI Freight Solutions. All rights reserved. | Brampton, Ontario, Canada</p>
     </footer>
 
     <!-- Back to top -->

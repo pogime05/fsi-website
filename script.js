@@ -79,9 +79,12 @@
   }, 4500);
 })();
 
-/* ── 2. HEADER ELEVATION ── */
+/* ── 2. HEADER ELEVATION ──
+   Elevated = dark glass header. Always elevated on sub-views (no hero behind
+   the header there), and on the home view once scrolled past the hero top. */
 const header = document.querySelector('[data-elevate]');
-const updateHeader = () => header.classList.toggle('is-elevated', window.scrollY > 24);
+let activeViewId = 'home';
+const updateHeader = () => header.classList.toggle('is-elevated', window.scrollY > 24 || activeViewId !== 'home');
 updateHeader();
 window.addEventListener('scroll', updateHeader, { passive: true });
 
@@ -105,11 +108,11 @@ nav.querySelectorAll('a').forEach(link => {
 /* ── 4. VIEW ROUTER ── */
 const views    = document.querySelectorAll('.view');
 const navLinks = document.querySelectorAll('[data-view]');
-let   activeViewId = 'home';
 
 function showView(id) {
   if (id === activeViewId) { nav.classList.remove('is-open'); return; }
   activeViewId = id;
+  updateHeader();
 
   views.forEach(v => v.classList.remove('active'));
   const next = document.getElementById('view-' + id);
@@ -166,7 +169,62 @@ function splitWords(el) {
 
 document.querySelectorAll('.split-words').forEach(splitWords);
 
-/* ── 6. HERO SEQUENCE (fires after splash exits) ── */
+/* Reveal split-word headings as they scroll into view. The hero heading is
+   excluded — it is choreographed separately by animateHero() after the splash.
+   Without this, headings on the home view (which never receive an animateViewIn
+   call on first load) stay at opacity:0 and appear blank. */
+const splitRevealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.word-inner').forEach((w, i) => {
+      setTimeout(() => w.classList.add('show'), 70 + i * 55);
+    });
+    splitRevealObs.unobserve(e.target);
+  });
+}, { threshold: 0.25 });
+document.querySelectorAll('.split-words').forEach(el => {
+  if (!el.classList.contains('hero-h1')) splitRevealObs.observe(el);
+});
+
+/* ── 6. HERO SEQUENCE (fires after splash exits) ──
+   Recreates the framer "animated-hero" rotating-word effect in vanilla JS +
+   Motion One: "Freight that" is static, the second line cycles through taglines
+   on a vertical spring-style reel. */
+let startHeroRotator = null;
+(function setupHeroRotator() {
+  const rotor = document.querySelector('.hero-rotate');
+  if (!rotor) return;
+  const words = Array.from(rotor.querySelectorAll('.hero-rotate-word'));
+  if (!words.length) return;
+
+  let idx = 0;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function place(animated) {
+    words.forEach((w, i) => {
+      const y  = i === idx ? '0%' : (i < idx ? '-115%' : '115%');
+      const op = i === idx ? 1 : 0;
+      if (animated && window.Motion) {
+        window.Motion.animate(w,
+          { transform: `translateY(${y})`, opacity: op },
+          { duration: 0.7, easing: [.16, 1, .3, 1] });
+      } else {
+        w.style.transform = `translateY(${y})`;
+        w.style.opacity   = String(op);
+      }
+    });
+  }
+
+  place(false); // park the first tagline immediately (behind the splash)
+  if (reduce) return; // honour reduced-motion: show first tagline, no cycling
+
+  let timer = null;
+  startHeroRotator = function () {
+    if (timer) return;
+    timer = setInterval(() => { idx = (idx + 1) % words.length; place(true); }, 2400);
+  };
+})();
+
 function animateHero() {
   const h1      = document.querySelector('.hero-h1');
   const copy    = document.querySelector('.hero-copy-reveal');
@@ -174,17 +232,12 @@ function animateHero() {
   const tagline = document.querySelector('.hero-tagline-reveal');
   if (!h1) return;
 
-  // Reveal h1 words
-  const words = h1.querySelectorAll('.word-inner');
-  words.forEach((w, i) => {
-    setTimeout(() => w.classList.add('show'), i * 60);
-  });
+  h1.classList.add('show');
+  setTimeout(() => copy    && copy.classList.add('show'), 260);
+  setTimeout(() => actions && actions.classList.add('show'), 420);
+  setTimeout(() => tagline && tagline.classList.add('show'), 600);
 
-  // Stagger rest
-  const lastDelay = words.length * 60;
-  setTimeout(() => copy    && copy.classList.add('show'), lastDelay + 100);
-  setTimeout(() => actions && actions.classList.add('show'), lastDelay + 250);
-  setTimeout(() => tagline && tagline.classList.add('show'), lastDelay + 420);
+  if (typeof startHeroRotator === 'function') startHeroRotator();
 }
 setTimeout(animateHero, 4600); // starts just after splash exits
 
@@ -498,6 +551,18 @@ document.querySelectorAll('.startup-step').forEach((step, i) => {
   step.style.transition = `opacity .55s ease ${i * 0.1}s, transform .55s cubic-bezier(.22,1,.36,1) ${i * 0.1}s`;
   startupStepObs.observe(step);
 });
+
+/* ── 14b. WIREFRAME TRUCK DRAW (FSi System section) ── */
+(function initTruckDraw() {
+  const section = document.querySelector('.system-section');
+  if (!section) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('is-drawn'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.3 });
+  obs.observe(section);
+})();
 
 /* ── 15. ABOUT ROUTE MAP CANVAS (full Canada + US) ── */
 (function initAboutMap() {
