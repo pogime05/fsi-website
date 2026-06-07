@@ -747,10 +747,25 @@ input:focus,textarea:focus { outline:none; border-color:var(--red); box-shadow:0
 .system-section { background:var(--deep); color:#fff; overflow:hidden; }
 .system-inner { display:grid; grid-template-columns:1.05fr 1fr; gap:clamp(40px,7vw,92px); align-items:center; }
 .system-visual { position:relative; }
-.truck-wireframe { width:100%; height:auto; display:block; overflow:visible; }
-.truck-draw > * { fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1500; stroke-dashoffset:1500; }
-.system-section.is-drawn .truck-draw > * { animation:drawTruck 2.6s cubic-bezier(.22,1,.36,1) forwards; }
-@keyframes drawTruck { to { stroke-dashoffset:0; } }
+/* Framed, brand-treated freight photo */
+.system-photo {
+  position:relative; border-radius:16px; overflow:hidden;
+  border:1px solid rgba(201,13,25,.28);
+  box-shadow:0 26px 64px rgba(0,0,0,.55);
+}
+.system-photo img {
+  display:block; width:100%; height:100%;
+  aspect-ratio:16/10; object-fit:cover;
+  filter:contrast(1.04) saturate(1.05) brightness(.94);
+}
+.system-photo-overlay {
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(13,14,17,.42), transparent 45%),
+    linear-gradient(0deg, rgba(13,14,17,.5), transparent 55%),
+    radial-gradient(130% 90% at 72% 28%, transparent 38%, rgba(13,14,17,.6)),
+    linear-gradient(0deg, rgba(201,13,25,.12), rgba(201,13,25,.04));
+}
 .system-section .eyebrow { color:var(--red); }
 .system-section h2 { color:#fff; }
 .system-body { color:rgba(255,255,255,.6); line-height:1.7; max-width:520px; margin:0; }
@@ -760,7 +775,6 @@ input:focus,textarea:focus { outline:none; border-color:var(--red); box-shadow:0
 
 @media (prefers-reduced-motion: reduce) {
   .compliance-track { animation:none; white-space:normal; flex-wrap:wrap; justify-content:center; }
-  .truck-draw > * { stroke-dashoffset:0; }
 }
 
 /* ── Responsive ── */

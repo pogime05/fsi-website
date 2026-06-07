@@ -555,18 +555,6 @@ document.querySelectorAll('.startup-step').forEach((step, i) => {
   startupStepObs.observe(step);
 });
 
-/* ── 14b. WIREFRAME TRUCK DRAW (FSi System section) ── */
-(function initTruckDraw() {
-  const section = document.querySelector('.system-section');
-  if (!section) return;
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('is-drawn'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.3 });
-  obs.observe(section);
-})();
-
 /* ── 15. ABOUT ROUTE MAP CANVAS (full Canada + US) ── */
 (function initAboutMap() {
   const wrap   = document.querySelector('.about-map-wrap');
