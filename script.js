@@ -201,25 +201,42 @@ let startHeroRotator = null;
   if (!words.length) return;
 
   let idx = 0;
+  // Reduced-motion is commonly enabled on phones (Accessibility → Reduce Motion).
+  // We still cycle the tagline, but with a gentle opacity cross-fade instead of
+  // the vertical slide — respecting the preference without going fully static.
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function place(animated) {
     words.forEach((w, i) => {
-      const y  = i === idx ? '0%' : (i < idx ? '-115%' : '115%');
-      const op = i === idx ? 1 : 0;
+      const active = i === idx;
+      const op = active ? 1 : 0;
+
+      if (reduce) {
+        if (animated && window.Motion) {
+          window.Motion.animate(w, { opacity: op }, { duration: 0.5, easing: 'ease' });
+        } else {
+          w.style.transition = animated ? 'opacity .5s ease' : 'none';
+          w.style.transform  = 'translateY(0)';
+          w.style.opacity    = String(op);
+        }
+        return;
+      }
+
+      const y = active ? '0%' : (i < idx ? '-115%' : '115%');
       if (animated && window.Motion) {
         window.Motion.animate(w,
           { transform: `translateY(${y})`, opacity: op },
           { duration: 0.7, easing: [.16, 1, .3, 1] });
       } else {
-        w.style.transform = `translateY(${y})`;
-        w.style.opacity   = String(op);
+        // Fallback (Motion lib not loaded yet, e.g. slow mobile data): CSS transition
+        w.style.transition = animated ? 'transform .7s cubic-bezier(.16,1,.3,1), opacity .7s ease' : 'none';
+        w.style.transform  = `translateY(${y})`;
+        w.style.opacity    = String(op);
       }
     });
   }
 
   place(false); // park the first tagline immediately (behind the splash)
-  if (reduce) return; // honour reduced-motion: show first tagline, no cycling
 
   let timer = null;
   startHeroRotator = function () {
