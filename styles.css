@@ -8,10 +8,12 @@
   --red: #c90d19;
   --red-dark: #990711;
   --red-bright: #e02020;
-  --charcoal: #17181c;
-  --deep: #0d0e11;
-  --dark: #111113;
-  --dark-2: #1a1a1d;
+  /* Dark-mode surfaces — lifted from near-black to graphite (client feedback:
+     loved the red/black/white combo but wanted it noticeably less "pitch dark"). */
+  --charcoal: #262931;
+  --deep: #1b1d22;
+  --dark: #202329;
+  --dark-2: #2c2f38;
   --shadow: 0 18px 44px rgba(11,11,13,0.14);
   /* Header height — matches .site-header computed height (brand + padding).
      Used for sticky topbar offset AND sub-view top clearance.
@@ -217,8 +219,8 @@ h3 { font-size:1.18rem; letter-spacing:-.01em; }
   transition:background .18s ease, box-shadow .18s ease, color .18s ease;
 }
 .site-header.is-elevated {
-  color:#fff; background:rgba(10,10,11,.92);
-  box-shadow:0 1px 0 rgba(255,255,255,.06), 0 12px 30px rgba(0,0,0,.5);
+  color:#fff; background:rgba(27,29,34,.92);
+  box-shadow:0 1px 0 rgba(255,255,255,.06), 0 12px 30px rgba(0,0,0,.4);
   backdrop-filter:blur(16px);
 }
 .brand { display:inline-flex; align-items:center; width:80px; height:52px; padding:6px; border-radius:8px; background:#fff; flex-shrink:0; }
@@ -361,7 +363,7 @@ body::before {
   66%  { transform:scale(1.045) translate( 0.4%, -0.2%); }
   100% { transform:scale(1.0)  translate(0,      0);     }
 }
-.hero-overlay { z-index:-1; background:linear-gradient(90deg,rgba(0,0,0,.88),rgba(0,0,0,.58) 46%,rgba(0,0,0,.18)),linear-gradient(0deg,rgba(0,0,0,.42),rgba(0,0,0,.02)); }
+.hero-overlay { z-index:-1; background:linear-gradient(90deg,rgba(0,0,0,.74),rgba(0,0,0,.46) 46%,rgba(0,0,0,.12)),linear-gradient(0deg,rgba(0,0,0,.32),rgba(0,0,0,.02)); }
 /* Bottom fade — blends hero into the dark About section below */
 .hero::after {
   content:''; position:absolute; left:0; right:0; bottom:0; height:42%;
@@ -482,7 +484,7 @@ body::before {
 .about-map-wrap {
   position:relative; border-radius:16px; overflow:hidden;
   border:1px solid rgba(255,255,255,.07);
-  background:#06070a;
+  background:#14161b;
   min-height:420px;
 }
 .about-map-canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
@@ -594,7 +596,7 @@ body::before {
 .timeline-item p { margin:0; color:rgba(255,255,255,.65); line-height:1.7; }
 
 /* CTA strip */
-.cta-strip { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:40px clamp(20px,7vw,96px); background:var(--ink); color:#fff; flex-wrap:wrap; }
+.cta-strip { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:40px clamp(20px,7vw,96px); background:var(--charcoal); color:#fff; flex-wrap:wrap; }
 .cta-strip p { margin:0; font-size:1.1rem; font-weight:700; }
 .cta-strip.light { background:var(--wash); color:var(--ink); }
 .cta-strip.light p { color:var(--ink); }
@@ -718,7 +720,7 @@ input:focus,textarea:focus { outline:none; border-color:var(--red); box-shadow:0
 
 /* ── Footer (dark) ── */
 .site-footer { animation:fadeUp .7s ease .2s both; }
-.site-footer { display:grid; grid-template-columns:1fr 1fr 1fr auto; align-items:start; gap:36px; padding:52px clamp(20px,7vw,96px) 40px; border-top:2px solid var(--red); background:#0a0a0b; color:#fff; }
+.site-footer { display:grid; grid-template-columns:1fr 1fr 1fr auto; align-items:start; gap:36px; padding:52px clamp(20px,7vw,96px) 40px; border-top:2px solid var(--red); background:var(--deep); color:#fff; }
 .footer-brand { display:flex; flex-direction:column; gap:16px; }
 .footer-brand img { width:72px; height:auto; background:#fff; padding:8px; border-radius:8px; }
 .footer-tagline { font-style:italic; color:rgba(255,255,255,.5); font-size:.82rem; line-height:1.65; margin:0; }
@@ -756,14 +758,14 @@ input:focus,textarea:focus { outline:none; border-color:var(--red); box-shadow:0
 .system-photo img {
   display:block; width:100%; height:100%;
   aspect-ratio:16/10; object-fit:cover;
-  filter:contrast(1.04) saturate(1.05) brightness(.94);
+  filter:contrast(1.03) saturate(1.05) brightness(1.02);
 }
 .system-photo-overlay {
   position:absolute; inset:0; pointer-events:none;
   background:
-    linear-gradient(90deg, rgba(13,14,17,.42), transparent 45%),
-    linear-gradient(0deg, rgba(13,14,17,.5), transparent 55%),
-    radial-gradient(130% 90% at 72% 28%, transparent 38%, rgba(13,14,17,.6)),
+    linear-gradient(90deg, rgba(27,29,34,.32), transparent 45%),
+    linear-gradient(0deg, rgba(27,29,34,.38), transparent 55%),
+    radial-gradient(130% 90% at 72% 28%, transparent 38%, rgba(27,29,34,.46)),
     linear-gradient(0deg, rgba(201,13,25,.12), rgba(201,13,25,.04));
 }
 .system-section .eyebrow { color:var(--red); }
