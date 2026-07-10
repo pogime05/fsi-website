@@ -366,8 +366,8 @@ const catCards   = document.querySelectorAll('.cat-card');
 const panelLabel = document.getElementById('course-panel-label');
 const labelMap   = {
   operations: 'Operations — 17 courses',
-  personnel:  'Personnel — 22 courses',
-  safety:     'Safety — 28 courses',
+  personnel:  'Personnel — 27 courses',
+  safety:     'Safety — 29 courses',
 };
 
 catCards.forEach(card => {
